@@ -188,6 +188,12 @@ body {
 }
 .nav a:hover { color: #a5d8ff; }
 
+.nav a.active {
+  color: #a5d8ff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 .content {
   max-width: 1000px;
   margin: 25px auto;

@@ -11,6 +11,8 @@
     Toast notification styles are inlined for functionality.
 -->
 <link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="css/shared-nav.css">
+<script src="js/shared-nav.js" defer></script>
 
 <!-- Loader overlay styles -->
 <style>
@@ -197,12 +199,7 @@ if (localStorage.getItem("loadingTransition") === "true") {
 
     <!-- Navigation menu links -->
 
-    <div class="nav">
-        <a href="dashboard.html">🏠 Home</a>
-        <a href="add-Assignment.html">➕ Add Assignment</a>
-        <a href="overview.html">📊 Overview</a>
-        <a href="About.html">ℹ️ About</a>
-    </div>
+    <div class="nav" data-shared-nav></div>
 </div>
 <!-- Main page content -->
 

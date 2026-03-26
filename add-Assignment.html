@@ -73,6 +73,8 @@
     <title>Essential Assignment Tracker - Add New Assignment</title>
 
     <link rel="stylesheet" href="css/add-Assignment.css">
+    <link rel="stylesheet" href="css/shared-nav.css">
+    <script src="js/shared-nav.js" defer></script>
 </head>
 <body>
 
@@ -88,7 +90,6 @@
 
 <!-- Header section with navigation -->
 <div class="header">
-    <a href="dashboard.html" class="back-btn">← Back</a>
     <div style="display: flex; align-items: center; width: 100%; justify-content: space-between;">
         <h1 style="margin: 0; font-size: 1.5rem; color: #f2e7f4; display: flex; align-items: center;">🎓 Essential Assignment Tracker
             <button id="darkModeToggle" aria-label="Toggle dark mode" style="background:none;border:none;cursor:pointer;margin-left:12px;vertical-align:middle;outline:none;position:relative;">
@@ -118,12 +119,7 @@
                 <span style="position:absolute;top:40px;left:0;width:180px;background:#23263a;color:#e0e0e0;font-size:0.92rem;padding:6px 12px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.12);display:none;z-index:100;" id="darkModeHint">Toggle dark mode for easier viewing</span>
             </button>
         </h1>
-        <div class="nav">
-            <a href="dashboard.html">🏠 Home</a>
-            <a href="add-Assignment.html">➕ Add Assignment</a>
-            <a href="overview.html">📊 Overview</a>
-            <a href="About.html">ℹ️ About</a>
-        </div>
+        <div class="nav" data-shared-nav></div>
     </div>
     <script>
         // Show hint on hover

@@ -103,6 +103,12 @@ body {
 /* Navigation link hover effect */
 .nav a:hover { color: #a5d8ff; }
 
+.nav a.active {
+  color: #a5d8ff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 /* Main content area */
 .content {
   max-width: 800px;

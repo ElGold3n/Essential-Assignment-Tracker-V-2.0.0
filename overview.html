@@ -6,6 +6,8 @@
     <title>🎓 Essential Assignment Tracker Overview</title>
     
     <link rel="stylesheet" href="css/overview.css">
+    <link rel="stylesheet" href="css/shared-nav.css">
+    <script src="js/shared-nav.js" defer></script>
 
     <!-- All main styles can be found in css/overview.css -->
 </head>
@@ -52,12 +54,7 @@
           darkModeToggleBtn.addEventListener('mouseleave',()=>{darkModeHint.style.display='none';});
         </script>
       </h1>
-      <div class="nav">
-        <a href="dashboard.html">🏠 Home</a>
-        <a href="add-Assignment.html">➕ Add Assignment</a>
-        <a href="overview.html">📊 Overview</a>
-        <a href="About.html">ℹ️ About</a>
-      </div>
+      <div class="nav" data-shared-nav></div>
     </div>
     <div class="container">
 

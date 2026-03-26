@@ -235,6 +235,13 @@ body {
   font-weight: bold;
 }
 .nav a:hover { color: #a5d8ff; }
+
+.nav a.active {
+  color: #a5d8ff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 .container {
   max-width: 1400px;
   margin: 0 auto;
