@@ -1,0 +1,198 @@
+/* Delete button hover style */
+#deleteAssignmentBtn:hover {
+  background: #b411cf !important;
+  color: #fff !important;
+  border-color: #b411cf !important;
+}
+/* add-Assignment.css - Styles for the Add Assignment page
+   Comments are provided for clarity and learning. */
+
+/* ========== DARK MODE STYLES ========== */
+
+/* Content area background and text in dark mode */
+.dark-mode .content {
+  background: #161b22 !important;
+  color: #e0e0e0 !important;
+}
+
+/* Form fields in dark mode */
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+  background: #23263a !important;
+  color: #e0e0e0 !important;
+  border-color: #444 !important;
+}
+
+/* Body and header backgrounds in dark mode */
+.dark-mode body {
+  background: #0d1117;
+  color: #e0e0e0;
+}
+.dark-mode .header {
+  background: linear-gradient(90deg, #0d1117 0%, #2d1846 50%, #0d1117 100%);
+  color: #fff;
+}
+.dark-mode .card {
+  background: #161b22 !important;
+  color: #e0e0e0 !important;
+}
+.dark-mode .nav a {
+  color: #fff;
+}
+.dark-mode .nav a:hover {
+  color: #58a6ff;
+}
+
+/* ========== LIGHT MODE & GENERAL STYLES ========== */
+
+/* Main body font and background */
+body {
+  font-family: Arial, sans-serif;
+  background: #f8f9fa;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+/* Header bar at the top of the page */
+.header {
+  background: #270f2b;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+/* Back button (top left) */
+.back-btn {
+  color: white;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.back-btn:hover {
+  color: #a5d8ff;
+}
+
+/* Navigation links (top right) */
+.nav a {
+  color: white;
+  margin-left: 20px;
+  text-decoration: none;
+  font-weight: bold;
+}
+.nav a:hover {
+  color: #a5d8ff;
+}
+
+/* Main content area */
+.content {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Section heading */
+h2 {
+  color: #2c5a21;
+  margin-bottom: 25px;
+  text-align: center;
+}
+.dark-mode h2 {
+  color: #0385b8 !important;
+}
+
+/* Assignment form table */
+table.form-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+}
+table.form-table td.label {
+  width: 140px;
+  font-weight: bold;
+  vertical-align: middle;
+  color: #2c5a21;
+}
+table.form-table td.input {
+  padding-left: 15px;
+}
+
+/* Form fields */
+input[type="text"],
+input[type="date"],
+input[type="number"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #0578ea;
+  border-radius: 3px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  background: white;
+  color: #333;
+}
+
+/* Notes textarea */
+textarea {
+  height: 90px;
+  resize: vertical;
+}
+
+/* Save button */
+button.save-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 14px 30px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: block;
+  margin: 30px auto 0;
+}
+button.save-btn:hover {
+  background: #218838;
+}
+
+/* Status badge preview */
+.status-preview {
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 6px;
+  min-width: 100px;
+  text-align: center;
+}
+
+/* Status badge colors (light mode) */
+.status-due     { background: #fff3cd; color: #856404; }
+.status-overdue { background: #f8d7da; color: #721c24; }
+.status-done    { background: #d4edda; color: #155724; }
+.status-Active  { background: #e2e3e5; color: #41464b; }
+
+/* Back link at the bottom */
+.back-link {
+  display: inline-block;
+  margin-top: 20px;
+  color: #007bff;
+  text-decoration: none;
+}
+.back-link:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,245 @@
+/* about.css - Styles for the About page */
+
+/* ========== DARK MODE STYLES ========== */
+
+/* Content area background and text in dark mode */
+
+.dark-mode .content {
+  background: #161b22 !important;
+  color: #e0e0e0 !important;
+}
+
+/* Gear menu (backup/restore) in dark mode */
+.dark-mode .gear-menu {
+  background: #23263a !important;
+  color: #e0e0e0 !important;
+}
+
+/* Make export/backup text white in dark mode */
+
+.dark-mode #backupMenu .hint,
+.dark-mode #backupMenu button,
+.dark-mode #backupMenu label {
+  color: #fff !important;
+}
+
+/* Info section background in dark mode */
+.dark-mode .section {
+  background: #161b22 !important;
+  color: #e0e0e0 !important;
+}
+
+/* Highlighted text in dark mode */
+.dark-mode .section .highlight {
+  color: #b411cf !important;
+}
+
+/* Body and header backgrounds in dark mode */
+.dark-mode body {
+  background: #0d1117 !important;
+  color: #e0e0e0 !important;
+}
+.dark-mode .header {
+  background: linear-gradient(90deg, #0d1117 0%, #2d1846 50%, #0d1117 100%);
+  color: #fff;
+}
+
+/* Card backgrounds in dark mode */
+.dark-mode .card {
+  background: #161b22 !important;
+  color: #e0e0e0 !important;
+}
+
+/* Navigation links in dark mode */
+.dark-mode .nav a {
+  color: #fff;
+}
+.dark-mode .nav a:hover {
+  color: #58a6ff;
+}
+
+/* ========== LIGHT MODE & GENERAL STYLES ========== */
+
+/* Main body font and background */
+body {
+  font-family: Arial, sans-serif;
+  background: #fdfdfd;
+  margin: 0;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Header bar at the top of the page */
+.header {
+  background: #270f2b;
+  color: white;
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-shadow: 0 3px 7px rgba(0,0,0,0.15);
+}
+
+/* Back button (top left) */
+.back-btn {
+  color: #f3f8f2;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-decoration: wavy;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+/* Back button hover effect */
+.back-btn:hover { color: #a5d8ff; }
+
+/* Navigation links (top right) */
+.nav a {
+  color: white;
+  margin-left: 20px;
+  text-decoration: none;
+  font-weight: bold;
+}
+/* Navigation link hover effect */
+.nav a:hover { color: #a5d8ff; }
+
+/* Main content area */
+.content {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+/* Main heading */
+h1 {
+  color: #f2e7f4;
+  margin: 0 0 25px;
+  font-size: 1.5rem;
+}
+
+/* Graduation cap icon */
+.icon {
+  font-size: 6rem;
+  margin-bottom: 20px;
+}
+
+/* Grouping for back button and gear */
+.left-group { display: flex; align-items: center; gap: 8px; }
+
+/* Settings gear button */
+.settings { position: relative; display: inline-block; z-index: 60; }
+/* Gear (settings) button style */
+.gear-btn {
+  background: transparent;
+  border: none;
+  color: #f3f8f2;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 6px 10px;
+  white-space: nowrap;
+  border-radius: 6px;
+}
+
+/* Backup/restore dropdown menu */
+.gear-menu {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 8px);
+  background: white;
+  color: #333;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  transform-origin: top left;
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 140ms ease, opacity 120ms ease;
+  z-index: 50;
+  width: 180px;
+  overflow: hidden;
+}
+/* Show gear menu when open */
+.gear-menu[aria-hidden="false"] {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+/* Show gear menu on focus */
+.settings:focus-within .gear-menu {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+/* Buttons inside gear menu */
+.gear-menu button {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+/* Gear menu button hover */
+.gear-menu button:hover { background: #f4f6f8; }
+/* Hint text in gear menu */
+.gear-menu .hint {
+  font-size: 0.8rem;
+  color: #666;
+  padding: 8px 12px;
+}
+
+/* Info section (about text) */
+.section { max-width: 600px; margin: 0 auto 35px; text-align: left; }
+/* List and highlight styles */
+ul { padding-left: 20px; margin: 15px 0; }
+ul li { margin: 10px 0; }
+.highlight { font-weight: bold; color: #2c3e50; }
+
+/* Footer note at the bottom */
+.footer-note {
+  margin-top: 50px;
+  color: #6c757d;
+  font-style: oblique;
+  font-size: 1.1rem;
+}
+
+/* Back to Home button at the bottom */
+.back-bottom {
+  display: inline-block;
+  margin-top: 40px;
+  padding: 12px 32px;
+  background: linear-gradient(90deg, #38b6ff 0%, #b411cf 100%);
+  color: #fff;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+  position: relative;
+  box-shadow: 0 4px 16px rgba(56,182,255,0.10), 0 1.5px 0 #b411cf;
+  overflow: hidden;
+  transition: box-shadow 0.3s, transform 0.2s;
+}
+.back-bottom::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  border-radius: 999px;
+  background: linear-gradient(120deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.55) 40%, rgba(255,255,255,0.12) 80%);
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.3s;
+}
+.back-bottom:hover {
+  background: linear-gradient(90deg, #b411cf 0%, #38b6ff 100%);
+  box-shadow: 0 8px 32px rgba(56,182,255,0.18), 0 3px 0 #b411cf;
+  transform: translateY(-2px) scale(1.04);
+}
+.back-bottom:active {
+  transform: scale(0.98);
+}

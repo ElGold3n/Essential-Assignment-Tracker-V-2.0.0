@@ -1,0 +1,265 @@
+/*
+  Alternate assignment block colors in the calendar for dark mode
+
+  Odd blocks: deep blue, Even blocks: deep purple 
+
+  This improves visual distinction between assignments in dark mode
+*/
+.dark-mode .day-cell .assignment-block:nth-child(odd) {
+  background: #283a5e !important; /* deep blue */
+  color: #e0e0e0 !important;
+}
+.dark-mode .day-cell .assignment-block:nth-child(even) {
+  background: #3a265a !important; /* deep purple */
+  color: #e0e0e0 !important;
+}
+/* Ensure all major overview page elements respond to dark mode */
+
+.dark-mode .container {
+  background: #181a20 !important;
+  color: #e0e0e0 !important;
+}
+.dark-mode .assignments {
+  color: #e0e0e0 !important;
+}
+.dark-mode .dashboard {
+  background: transparent !important;
+  color: #e0e0e0 !important;
+}
+.dark-mode .day-cell {
+  background: #23263a !important;
+  color: #e0e0e0 !important;
+}
+.dark-mode .priority {
+  background: #2d1846 !important;
+  color: #ffe066 !important;
+}
+/* Assignment list and card styles (below calendar) */
+.assignments {
+  display: grid;
+  gap: 4rem;
+  margin-top: 2.5rem;
+}
+.assignment-card {
+  background: var(--card);
+  border-radius: 10px;
+  padding: 1.2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border-left: 5px solid var(--web-technologies-part-1); /* default */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.assignment-card.web-technologies-part-1 { border-left-color: var(--web-technologies-part-1); }
+.assignment-card.artificial-intelligence { border-left-color: var(--artificial-intelligence); }
+.assignment-card.database-systems { border-left-color: var(--database-systems); }
+.assignment-card.devops-global-online { border-left-color: var(--devops-global-online); }
+.priority {
+  font-size: 0.85rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  color: rgb(10, 10, 10);
+  align-self: flex-start;
+  margin-bottom: 0.5rem;
+}
+.high { background: var(--high); color: #000; }
+.med { background: var(--med); }
+.low { background: var(--low); }
+.overdue { background: var(--overdue); font-weight: bold; color: #fff; }
+@media (max-width: 768px) {
+  .dashboard { grid-template-columns: 1fr; }
+  .assignments { gap: 2rem; }
+}
+/*
+  Timetable calendar layout and assignment block styles
+
+  These styles control the appearance and layout of the weekly calendar (timetable) in the overview page.
+
+  - .timetable: Main calendar container, sets background, border radius, shadow, and spacing.
+
+  - .timetable table: Ensures the calendar table fills the container and columns are evenly spaced.
+
+  - .timetable th, .timetable td: Style the table header and cells for clarity and readability.
+
+  - .day-cell: Each weekday cell, sets minimum height and vertical alignment for assignment blocks.
+
+  - .assignment-block: Each assignment in the calendar, styled as a colored card with padding and rounded corners.
+*/
+.timetable {
+  background: transparent;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+.timetable table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.timetable th, .timetable td {
+  font-size: 0.9rem;
+  padding: 8px;
+  text-align: center;
+  border: 1px solid var(--border);
+  background: #fff;
+  word-break: break-word;
+}
+.timetable th {
+  background: var(--primary);
+  color: rgb(15, 15, 15);
+}
+.day-cell {
+  min-height: 80px;
+  position: relative;
+  vertical-align: top;
+}
+.assignment-block {
+  padding: 6px 8px;
+  margin: 4px auto;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: rgb(0, 0, 0);
+  max-width: 90%;
+  background: #e0e7ff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+/* Timetable cell font size and padding for clarity */
+
+.timetable th, .timetable td {
+  font-size: 0.9rem;
+  padding: 8px;
+}
+/* overview.css - Styles for the Overview page (Essential Assignment Tracker)
+
+   This CSS file defines the styles for the overview page of the assignment tracker web application.
+   
+   It includes styles for the timetable calendar, assignment cards, and dark mode theming.
+
+   The timetable calendar is styled to display assignments in a clear and organized manner, with different colors for each course and priority level.
+
+   The styles are designed to create a clean, modern, and user-friendly interface for students to track their assignments effectively.
+
+/* ========== DARK MODE STYLES ========== */
+
+.dark-mode .timetable {
+  background: #161b22 !important;
+  color: #e0e0e0 !important;
+}
+.dark-mode .timetable th, .dark-mode .timetable td {
+  border: 1px solid #333 !important;
+}
+.dark-mode .timetable th {
+  background: #2d1846 !important;
+  color: #b411cf !important;
+}
+.dark-mode .assignment-block {
+  background: #23263a !important;
+  color: #e0e0e0 !important;
+}
+/*
+ * Dark mode override for manual toggle - applies to all major elements on the overview page
+
+ * This section changes the colors and backgrounds of the page when dark mode is turned on.
+
+ * When the user clicks the dark mode button, these styles are applied to make the page easier on the eyes at night or in low light.
+
+ * It overrides the normal (light) colors with darker ones for better visibility and comfort.
+ */
+.dark-mode body {
+
+  /* background removed, handled by .dark-mode .container */
+
+  color: #e0e0e0;
+  transition: color 1s;
+}
+.dark-mode .header {
+  background: linear-gradient(90deg, #0d1117 0%, #2d1846 50%, #0d1117 100%);
+  color: #fff;
+}
+.dark-mode .card {
+  background: #161b22 !important;
+  color: #e0e0e0 !important;
+}
+.dark-mode .nav a {
+  color: #fff;
+}
+.dark-mode .nav a:hover {
+  color: #58a6ff;
+}
+
+/* ========== CSS VARIABLES ========== */
+
+:root {
+  --bg: #f8fafc;
+  --text: #1e293b;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --primary: #6366f1; /* indigo accent */
+  --web-technologies-part-1: #3b82f6;    /* blue */
+  --artificial-intelligence: #10b981;     /* emerald */
+  --database-systems: #ec4899;     /* pink */
+  --devops-global-online: #f59e0b;    /* amber */
+  --high: #c2b280;    /* light brown for due soon */
+  --med: #f59e0b;     /* amber */
+  --low: #4caf50;     /* darker green */
+  --overdue: #dc2626; /* red for overdue */
+}
+
+/* ========== GENERAL STYLES ========== */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  transition: color 1s;
+}
+.header {
+  background: #270f2b;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+.nav a {
+  color: white;
+  margin-left: 20px;
+  text-decoration: none;
+  font-weight: bold;
+}
+.nav a:hover { color: #a5d8ff; }
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: #f8f9fa;
+  color: #333;
+  transition: background 3s cubic-bezier(0.4,0,0.2,1), color 1s cubic-bezier(0.4,0,0.2,1);
+}
+.card {
+  background: rgba(255,255,255,0.75);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  border: 1px solid var(--border);
+  transition: background 2s cubic-bezier(0.4,0,0.2,1);
+}
+.card h3 { margin: 0 0 1rem; font-size: 1.1rem; }
+.progress-ring {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: conic-gradient(var(--primary) 0% 78%, #e2e8f0 78% 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: bold; color: var(--primary); margin: 0 auto;
+}
+.progress-bar {
+  height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; background: var(--primary); width: 0%; transition: width 0.5s;
+}

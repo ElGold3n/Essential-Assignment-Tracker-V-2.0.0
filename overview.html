@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>🎓 Essential Assignment Tracker Overview</title>
+    
+    <link rel="stylesheet" href="css/overview.css">
+
+    <!-- All main styles can be found in css/overview.css -->
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎓 Essential Assignment Tracker Overview
+        <button id="darkModeToggle" aria-label="Toggle dark mode" style="background:none;border:none;cursor:pointer;margin-left:12px;vertical-align:middle;outline:none;position:relative;">
+          <span id="darkModeIcon" style="display:inline-block;width:32px;height:32px;vertical-align:middle;">
+
+            <!--Sun SVG for light mode -->
+
+            <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="32" height="32" style="display:block;">
+              <circle cx="24" cy="24" r="10" fill="#ffe066" stroke="#f9c846" stroke-width="2"/>
+              <g stroke="#f9c846" stroke-width="2">
+                <line x1="24" y1="4" x2="24" y2="12"/>
+                <line x1="24" y1="36" x2="24" y2="44"/>
+                <line x1="4" y1="24" x2="12" y2="24"/>
+                <line x1="36" y1="24" x2="44" y2="24"/>
+                <line x1="10.93" y1="10.93" x2="16.97" y2="16.97"/>
+                <line x1="31.03" y1="31.03" x2="37.07" y2="37.07"/>
+                <line x1="10.93" y1="37.07" x2="16.97" y2="31.03"/>
+                <line x1="31.03" y1="16.97" x2="37.07" y2="10.93"/>
+              </g>
+            </svg>
+
+            <!--Moon SVG for dark mode -->
+
+            <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="32" height="32" style="display:none;">
+              <path d="M34 24c0 7-5.5 12-12 12-2.5 0-4.8-0.7-6.7-2 6.2-1.1 10.7-6.2 10.7-12.1 0-3.2-1.2-6.1-3.2-8.3C25.2 13.2 34 15.7 34 24z" fill="#b411cf" stroke="#fff" stroke-width="2"/>
+              <circle cx="30" cy="20" r="2" fill="#fff" opacity="0.7"/>
+              <circle cx="26" cy="28" r="1.2" fill="#fff" opacity="0.5"/>
+            </svg>
+          </span>
+          <span style="position:absolute;top:40px;left:0;width:180px;background:#23263a;color:#e0e0e0;font-size:0.92rem;padding:6px 12px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.12);display:none;z-index:100;" id="darkModeHint">Toggle dark mode for easier viewing</span>
+        </button>
+        <script>
+
+          // Show hint on hover
+
+          const darkModeToggleBtn = document.getElementById('darkModeToggle');
+          const darkModeHint = document.getElementById('darkModeHint');
+          darkModeToggleBtn.addEventListener('mouseenter',()=>{darkModeHint.style.display='block';});
+          darkModeToggleBtn.addEventListener('mouseleave',()=>{darkModeHint.style.display='none';});
+        </script>
+      </h1>
+      <div class="nav">
+        <a href="dashboard.html">🏠 Home</a>
+        <a href="add-Assignment.html">➕ Add Assignment</a>
+        <a href="overview.html">📊 Overview</a>
+        <a href="About.html">ℹ️ About</a>
+      </div>
+    </div>
+    <div class="container">
+
+    <!-- Dashboard Overview Cards
+
+         Shows semester progress, upcoming assignments, overdue count, and today's workload -->
+    
+    <div class="dashboard">
+      <div class="card">
+        <h3>Semester Progress</h3>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:0.5rem;">
+          <div style="font-size:2.2rem;font-weight:bold;color:#4caf50;" id="progressPercent">0%</div>
+          <div style="width:90%;height:14px;background:#e2e8f0;border-radius:7px;overflow:hidden;">
+            <div id="progressBar" style="height:100%;width:0%;background:#4caf50;border-radius:7px;transition:width 0.5s;position:relative;overflow:hidden;"></div>
+            <div id="progressGloss" style="position:absolute;top:0;left:0;height:100%;width:100%;pointer-events:none;z-index:2;"></div>
+                // Add gloss overlay animation
+                const gloss = document.getElementById('progressGloss');
+                gloss.style.background = 'linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.45) 40%, rgba(255,255,255,0.18) 80%)';
+                gloss.style.backgroundSize = '200% 100%';
+                gloss.style.backgroundPosition = '0% 0%';
+                gloss.style.borderRadius = '7px';
+                let glossAnimFrame = 0;
+                function animateGloss() {
+                  glossAnimFrame++;
+                  const pos = (glossAnimFrame % 120) / 120 * 100;
+                  gloss.style.backgroundPosition = `${pos}% 0%`;
+                  requestAnimationFrame(animateGloss);
+                }
+                animateGloss();
+          </div>
+        </div>
+        <p id="progressText" style="text-align:center;margin-top:0.5rem;color:#555;font-size:1rem;">0 of 0 assignments completed</p>
+      </div>
+      <div class="card">
+        <h3>Upcoming This Week</h3>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:0.5rem;">
+          <div style="font-size:2rem;font-weight:bold;color:#f59e0b;" id="weekCount">0</div>
+          <div style="width:90%;height:14px;background:#e2e8f0;border-radius:7px;overflow:hidden;">
+            <div id="weekBar" style="height:100%;width:0%;background:#f59e0b;border-radius:7px;transition:width 0.5s;"></div>
+          </div>
+        </div>
+        <p id="weekText" style="text-align:center;margin-top:0.5rem;color:#555;font-size:1rem;">due dates this week</p>
+      </div>
+      <div class="card">
+        <h3>Overdue</h3>
+        <p id="overdueCount" style="color:var(--overdue); font-size:1.8rem; font-weight:bold; text-align:center;">0</p>
+      </div>
+      <div class="card">
+        <h3>Today's Workload</h3>
+        <div id="todayWorkload" style="text-align:center;color:#555;font-size:1rem;">No tasks today</div>
+      </div>
+    </div>
+
+    <!--Visual Timetable (Weekly Calendar) -->
+
+
+    <!--Displays assignments for each weekday in a calendar format -->
+
+    <div class="timetable">
+      <table>
+        <thead>
+          <tr>
+            <th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="timetableRow">
+            <td class="day-cell" id="mondayCell"></td>
+            <td class="day-cell" id="tuesdayCell"></td>
+            <td class="day-cell" id="wednesdayCell"></td>
+            <td class="day-cell" id="thursdayCell"></td>
+            <td class="day-cell" id="fridayCell"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!--Assignment List with Color-Coding, Priority Flags & Progress -->
+
+    <!--Each assignment card shows name, status, due date, and module -->
+
+    <div class="assignments">
+      <div id="assignmentCards"></div>
+    </div>
+  </div>
+
+  <script>
+
+        //Render today's workload card //
+
+        function renderTodayWorkload(assignments) {
+          const today = new Date();
+          const yyyy = today.getFullYear();
+          const mm = String(today.getMonth() + 1).padStart(2, '0');
+          const dd = String(today.getDate()).padStart(2, '0');
+          const todayStr = `${yyyy}-${mm}-${dd}`;
+          const todayAlt = `${dd}/${mm}/${yyyy}`;
+          const todaysAssignments = assignments.filter(a => {
+            if (a.status === 'Completed') return false;
+
+            // converts the assignment's due date into a format that JavaScript can understand.
+
+            // This is important as dates can be written in different ways (such as 25/02/2026 or 2026-02-25),
+            
+            // and i need to make sure i can compare them correctly to today's date.
+            
+            let adate = a.due;
+            if (!adate) return false;
+
+            // Changes the date format to YYYY-MM-DD (for example, 2026-02-25).
+
+            // This format is the standard way JavaScript understands dates,
+
+            // so dates convert like 25/02/2026 to 2026-02-25 to make sure
+
+            // our code can compare dates correctly.
+            
+            let parsed = '';
+            if (/^\d{4}-\d{2}-\d{2}$/.test(adate)) {
+              parsed = adate;
+            } else if (/^\d{2}\/\d{2}\/\d{4}$/.test(adate)) {
+
+              // If the date is in DD/MM/YYYY format (like 25/02/2026),
+
+              // rearrange it to YYYY-MM-DD (like 2026-02-25) so JavaScript can understand it.
+
+              const [d, m, y] = adate.split('/');
+              parsed = `${y}-${m}-${d}`;
+            } else {
+              // If the date format is not recognized above, try to let JavaScript parse it automatically.
+
+              const d = new Date(adate);
+              if (!isNaN(d)) {
+                parsed = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+              }
+            }
+            return parsed === todayStr;
+          });
+          const count = todaysAssignments.length;
+          let text = '';
+          if (count === 0) text = 'No tasks today';
+          else if (count === 1) text = 'Light day — 1 task';
+          else if (count <= 3) text = `Moderate day — ${count} tasks`;
+          else text = `Busy day — ${count} tasks`;
+            text += '<div style="margin-top:0.5em;font-size:1em;color:#222;">';
+            todaysAssignments.forEach(a => {
+              text += `${a.name}<br>`;
+            });
+            text += '</div>';
+            document.getElementById('todayWorkload').innerHTML = text;
+        }
+        
+    // Load assignments from localStorage
+
+    // This function gets the list of assignments saved in your browser's local storage.
+
+    // It lets your assignments stay saved even after you close or refresh the page.
+
+    function getAssignments() {
+      const data = localStorage.getItem('assignments');
+      let arr = data ? JSON.parse(data) : [];
+
+      // Check each assignment's due date.
+      
+      // If the due date is before today and the assignment is not completed,
+      // mark its status as 'Overdue' so it can be highlighted in the app.
+      
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      arr = arr.map(a => {
+        if (a.status !== 'Completed' && a.due) {
+          let dueDate;
+          if (/^\d{4}-\d{2}-\d{2}$/.test(a.due)) {
+            dueDate = new Date(a.due);
+          } else if (/^\d{2}\/\d{2}\/\d{4}$/.test(a.due)) {
+            const [dd, mm, yyyy] = a.due.split('/');
+            dueDate = new Date(`${yyyy}-${mm}-${dd}`);
+          } else {
+            dueDate = new Date(a.due);
+          }
+          dueDate.setHours(0,0,0,0);
+          if (dueDate < today) a.status = 'Overdue';
+        }
+        return a;
+      });
+      return arr;
+    }
+
+    // Map modules to colors for card borders and timetable blocks
+
+    function getBlockColor(module) {
+      if (module.includes('Web Technologies Part 1') || module.includes('SET08801')) return 'var(--Web Technologies Part 1)';
+      if (module.includes('Artificial Intelligence') || module.includes('SET08825')) return 'var(--Artificial Intelligence)';
+      if (module.includes('Database Systems') || module.includes('SET09801')) return 'var(--Database Systems)';
+      if (module.includes('Devops Global Online') || module.includes('SET09901')) return 'var(--Devops Global Online)';
+      return 'var(--primary)';
+    }
+
+    function getCardClass(module) {
+      if (module.includes('Web Technologies Part 1')) return 'web-technologies-part-1';
+      if (module.includes('Artificial Intelligence')) return 'artificial-intelligence';
+      if (module.includes('Database Systems')) return 'database-systems';
+      if (module.includes('Devops Global Online')) return 'devops-global-online';
+      if (module.includes('SET08801')) return 'web-technologies-part-1';
+      if (module.includes('SET08825')) return 'artificial-intelligence';
+      if (module.includes('SET09801')) return 'database-systems';
+      if (module.includes('SET09901')) return 'devops-global-online';
+      return '';
+    }
+
+    function getPriority(status) {
+      if (status === 'Overdue') return 'overdue';
+      if (status === 'Due soon') return 'high';
+      if (status === 'Active') return 'med';
+      if (status === 'Completed') return 'low';
+      return 'med';
+    }
+
+    // Get weekday index (0=Monday, 4=Friday)
+
+    function getWeekdayIndex(dateStr) {
+
+      // This function can handle dates in two formats:
+
+      // - YYYY-MM-DD (like 2024-03-15)
+      // - DD/MM/YYYY (like 15/03/2024)
+
+      // It converts both to a JavaScript Date object so the weekday can be found.
+      let d;
+      if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+        d = new Date(dateStr);
+      } else if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr)) {
+
+        // Convert DD/MM/YYYY to YYYY-MM-DD
+
+        const [dd, mm, yyyy] = dateStr.split('/');
+        d = new Date(`${yyyy}-${mm}-${dd}`);
+      } else {
+        d = new Date(dateStr);
+      }
+      if (isNaN(d)) return -1;
+      let day = d.getDay(); // 0=Sunday, 1=Monday, ...
+      if (day === 0) day = 6; // Sunday → 6
+      else day -= 1; // Monday → 0
+      return day;
+    }
+
+    // This function fills the timetable with assignment blocks for each weekday.
+    
+    // It helps you see which assignments are due on which days at a glance.
+
+    function renderTimetable(assignments) {
+      const cells = [
+        document.getElementById('mondayCell'),
+        document.getElementById('tuesdayCell'),
+        document.getElementById('wednesdayCell'),
+        document.getElementById('thursdayCell'),
+        document.getElementById('fridayCell')
+      ];
+      
+      // Clear all timetable cells before adding new assignments.
+
+      // This ensures the timetable is empty so we don't show old data from previous renders.
+      
+      cells.forEach(cell => cell.innerHTML = '');
+
+      // For each assignment, figure out which weekday it is due (Monday to Friday)
+      
+      // and add it to the correct cell in the timetable. This helps visualize your week.
+
+      assignments.forEach(a => {
+        const idx = getWeekdayIndex(a.due);
+        if (idx >= 0 && idx <= 4) {
+          // Determine status color (match dashboard.html logic)
+          let statusColor = '';
+          if (a.status === 'Completed') statusColor = '#b2f2a5';
+          else if (a.status === 'Overdue') statusColor = '#e74c3c';
+          else if (a.status === 'Due soon') statusColor = '#ffe066';
+          else if (a.status === 'Active') statusColor = '#f59e0b';
+          else statusColor = getBlockColor(a.module);
+
+          const status = a.status === 'Overdue' ? 'Overdue!' : a.status;
+          cells[idx].innerHTML += `<div class="assignment-block" style="background:${statusColor};">${a.name} <small>(${status})</small><br><span style="font-size:0.85em;">Due: ${a.due}</span></div>`;
+        }
+      });
+    }
+
+    // This function displays all assignments as cards on the page.
+
+    // Each card shows the assignment's name, status, due date, and module.
+
+    // If there are no assignments, it shows a message instead.
+    
+    function renderAssignmentCards(assignments) {
+      const container = document.getElementById('assignmentCards');
+      container.innerHTML = '';
+      if (!assignments.length) {
+        container.innerHTML = '<div style="color:#888;text-align:center;">No assignments found. Add some from the Home or Add Assignment page.</div>';
+        return;
+      }
+      assignments.forEach(a => {
+        const cardClass = getCardClass(a.module);
+        const priorityClass = getPriority(a.status);
+        container.innerHTML += `
+          <div class="assignment-card ${cardClass} ${priorityClass}">
+            <strong>${a.name}</strong>
+            <span class="priority ${priorityClass}">${a.status}</span>
+            <div>Due: ${a.due}</div>
+            <small>Module: ${a.module}</small>
+          </div>
+        `;
+      });
+    }
+
+    // When the page loads, this code displays the weekly timetable and assignment cards.
+    // It shows all your assignments visually, so you can see your schedule and tasks right away without clicking anything.
+    // This helps students quickly understand their workload and deadlines as soon as they open the overview page.
+
+    const assignments = getAssignments();
+    renderTimetable(assignments);
+    renderAssignmentCards(assignments);
+
+    // Calculate and display the number of overdue assignments.
+    
+    // This helps students quickly see how many tasks are past their due date.
+
+    const overdue = assignments.filter(a => a.status === 'Overdue').length;
+    document.getElementById('overdueCount').textContent = overdue;
+
+    // Semester progress calculation
+
+        // function: Calculates the start (Monday) and end (Sunday) dates for the current week.
+
+        // This is useful for showing which assignments are due this week.
+        
+        function getWeekRange() {
+          const now = new Date();
+          const day = now.getDay();
+          const monday = new Date(now);
+          monday.setDate(now.getDate() - ((day === 0 ? 6 : day - 1)));
+          monday.setHours(0,0,0,0);
+          const sunday = new Date(monday);
+          sunday.setDate(monday.getDate() + 6);
+          sunday.setHours(23,59,59,999);
+          return {start: monday, end: sunday};
+        }
+
+        // This function updates the dashboard card that shows how many assignments are due this week.
+        
+        // It helps students quickly see their workload for the current week, so they can plan ahead and avoid missing deadlines.
+
+        function renderUpcomingWeek(assignments) {
+          const {start, end} = getWeekRange();
+          const weekAssignments = assignments.filter(a => {
+            const due = new Date(a.due);
+            return due >= start && due <= end && a.status !== 'Completed';
+          });
+          const count = weekAssignments.length;
+          document.getElementById('weekCount').textContent = count;
+          document.getElementById('weekBar').style.width = (count > 0 ? Math.min(count * 20, 100) : 0) + '%';
+          document.getElementById('weekText').textContent = `${count} due dates this week`;
+        }
+    function renderSemesterProgress(assignments) {
+      const total = assignments.length;
+      const completed = assignments.filter(a => a.status === 'Completed').length;
+      const percent = total ? Math.round((completed / total) * 100) : 0;
+
+      // Animate progress bar fill
+      const progressBar = document.getElementById('progressBar');
+      const progressPercent = document.getElementById('progressPercent');
+      const progressText = document.getElementById('progressText');
+      let current = 0;
+      progressBar.style.width = '0%';
+      progressPercent.textContent = '0%';
+      progressText.textContent = `${completed} of ${total} assignments completed`;
+      const step = percent / 120; // 120 frames for even smoother animation
+      function lerpColor(a, b, t) {
+        // Linear interpolation between two hex colors
+        a = a.replace('#',''); b = b.replace('#','');
+        const ar = parseInt(a.substring(0,2),16), ag = parseInt(a.substring(2,4),16), ab = parseInt(a.substring(4,6),16);
+        const br = parseInt(b.substring(0,2),16), bg = parseInt(b.substring(2,4),16), bb = parseInt(b.substring(4,6),16);
+        const r = Math.round(ar + (br-ar)*t), g = Math.round(ag + (bg-ag)*t), b_ = Math.round(ab + (bb-ab)*t);
+        return `rgb(${r},${g},${b_})`;
+      }
+      function animateFill() {
+        if (current < percent) {
+          current = Math.min(current + step, percent);
+          progressBar.style.width = current + '%';
+          progressPercent.textContent = Math.round(current) + '%';
+          // Color transition: orange (#fd7e14) to green (#4caf50)
+          const t = current / 100;
+          progressBar.style.background = lerpColor('#fd7e14', '#4caf50', t);
+          requestAnimationFrame(animateFill);
+        } else {
+          progressBar.style.width = percent + '%';
+          progressPercent.textContent = percent + '%';
+          progressBar.style.background = lerpColor('#fd7e14', '#4caf50', percent/100);
+        }
+      }
+      animateFill();
+      progressText.textContent = `${completed} of ${total} assignments completed`;
+    }
+    renderSemesterProgress(assignments);
+    renderUpcomingWeek(assignments);
+    renderTodayWorkload(assignments);
+  </script>
+</body>
+<script>
+  
+// Dark mode toggle logic with sun/moon icons
+
+   // This section enables the user to switch between light and dark themes for the app.
+
+   // The sun icon is shown in light mode, and the moon icon in dark mode.
+
+   // When the user clicks the toggle button, the theme changes and the icon updates automatically.
+
+   // The user's preference is saved in localStorage so it stays the same next time they visit.
+
+const darkModeToggle = document.getElementById('darkModeToggle');
+const sunIcon = document.getElementById('sunIcon');
+const moonIcon = document.getElementById('moonIcon');
+function setDarkMode(on) {
+  // Add smooth transition for background and color
+        document.body.style.transition = 'background 3s, color 3s';
+    document.documentElement.classList.toggle('dark-mode', on);
+    if (on) {
+        sunIcon.style.display = 'none';
+        moonIcon.style.display = 'block';
+    } else {
+        sunIcon.style.display = 'block';
+        moonIcon.style.display = 'none';
+    }
+    localStorage.setItem('darkMode', on ? '1' : '0');
+}
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const saved = localStorage.getItem('darkMode');
+const dark = saved === null ? prefersDark : saved === '1';
+setDarkMode(dark);
+darkModeToggle.addEventListener('click', () => {
+    setDarkMode(!document.documentElement.classList.contains('dark-mode'));
+});
+</script>
+</html>
