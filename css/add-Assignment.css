@@ -158,6 +158,15 @@ textarea {
   resize: vertical;
 }
 
+textarea[name="notes"] {
+  font-family: "Inter", "Source Sans 3", "Nunito Sans", Arial, sans-serif;
+  font-size: 0.95rem;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.45;
+  word-spacing: 0.04em;
+}
+
 /* Save button */
 button.save-btn {
   background: #28a745;

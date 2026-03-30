@@ -22,21 +22,231 @@
     { href: 'About.html', icon: 'ℹ️', text: 'About' }
   ];
 
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  const rawName = (localStorage.getItem('username') || 'Student').trim();
+  const userName = rawName || 'Student';
+  const ROOT_PROFILE_IMAGE = 'USER%20ICON.png';
+  const DEFAULT_PROFILE_IMAGE = 'Icons/user.svg';
+  const savedProfileImg = localStorage.getItem('userProfileImage');
+  const initialProfileImg = savedProfileImg || ROOT_PROFILE_IMAGE;
+  const userHtml =
+    '<div class="nav-user" aria-label="User profile">' +
+    '  <button type="button" class="nav-user-bubble user-profile-picker" title="Click to upload profile picture" aria-label="Upload profile picture" style="border:none;padding:0;cursor:pointer;background:inherit;"><img class="nav-user-icon" src="' + initialProfileImg + '" alt="User profile" loading="lazy" decoding="async"></button>' +
+    '  <input class="user-profile-input" type="file" accept="image/*" style="display:none;">' +
+    '  <div class="nav-user-name" title="' + escapeHtml(userName) + '">' + escapeHtml(userName) + '</div>' +
+    '  <button type="button" class="nav-user-remove" aria-label="Remove profile photo" title="Remove profile photo">Remove photo</button>' +
+    '</div>';
+
   const currentPage = window.location.pathname.split('/').pop().toLowerCase() || 'index.html';
 
-  const html = links
+  const linksHtml = links
     .map(function (link) {
       const isActive = currentPage === link.href.toLowerCase();
       return '<a href="' + link.href + '" aria-label="' + link.text + '"' + (isActive ? ' class="active" aria-current="page"' : '') + '><span class="nav-icon">' + link.icon + '</span><span class="nav-text">' + link.text + '</span></a>';
     })
     .join('');
 
+  const html = userHtml + linksHtml;
+
+  function notify(message) {
+    if (typeof window.showNotification === 'function') {
+      window.showNotification(message, { type: 'success' });
+    }
+  }
+
   navContainers.forEach(function (container) {
     container.innerHTML = html;
+
+    // Profile picture upload handler - attach to each container
+    const userProfilePicker = container.querySelector('.user-profile-picker');
+    const userProfileInput = container.querySelector('.user-profile-input');
+    const userProfileRemove = container.querySelector('.nav-user-remove');
+
+    function setFallback(icon) {
+      icon.onerror = null;
+      icon.src = DEFAULT_PROFILE_IMAGE;
+    }
+
+    function setAllProfileImages(src) {
+      const allProfileIcons = document.querySelectorAll('.nav-user-icon');
+      allProfileIcons.forEach(function (icon) {
+        icon.onerror = function () { setFallback(icon); };
+        icon.src = src;
+        icon.style.objectFit = 'cover';
+      });
+    }
+
+    setAllProfileImages(initialProfileImg);
+
+    if (userProfilePicker && userProfileInput) {
+      userProfilePicker.addEventListener('click', function () {
+        userProfileInput.click();
+      });
+
+      userProfileInput.addEventListener('change', function (e) {
+        if (e.target.files && e.target.files[0]) {
+          const file = e.target.files[0];
+          const reader = new FileReader();
+          reader.onload = function (event) {
+            const base64Img = event.target.result;
+            localStorage.setItem('userProfileImage', base64Img);
+            setAllProfileImages(base64Img);
+            notify('Profile photo updated');
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    if (userProfileRemove) {
+      userProfileRemove.addEventListener('click', function () {
+        localStorage.removeItem('userProfileImage');
+        setAllProfileImages(ROOT_PROFILE_IMAGE);
+        notify('Profile photo removed');
+      });
+    }
   });
 
   const darkModeToggle = document.getElementById('darkModeToggle');
+  const sunIcon = document.getElementById('sunIcon');
+  const moonIcon = document.getElementById('moonIcon');
   let leftGroup = document.querySelector('.left-group');
+  let sidebarSoundToggle = null;
+
+  const SOUND_PREF_KEY = 'soundEnabled';
+
+  function isSoundEnabled() {
+    return localStorage.getItem(SOUND_PREF_KEY) !== '0';
+  }
+
+  function setSoundEnabled(enabled) {
+    const value = enabled ? '1' : '0';
+    localStorage.setItem(SOUND_PREF_KEY, value);
+    window.dispatchEvent(new CustomEvent('app-sound-change', { detail: { enabled: enabled } }));
+  }
+
+  window.isAppSoundEnabled = isSoundEnabled;
+  window.setAppSoundEnabled = setSoundEnabled;
+
+  function initThemeMenu(toggleBtn) {
+    if (!toggleBtn) return;
+
+    const modeOptions = ['light', 'dark', 'system'];
+    const systemMedia = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const themeMenu = document.createElement('div');
+    themeMenu.className = 'theme-menu';
+    themeMenu.setAttribute('aria-hidden', 'true');
+    themeMenu.innerHTML =
+      '<button type="button" class="theme-option" data-theme-mode="light">LIGHT</button>' +
+      '<button type="button" class="theme-option" data-theme-mode="dark">DARK</button>' +
+      '<button type="button" class="theme-option" data-theme-mode="system">USE SYSTEM SYSTEMS</button>';
+
+    if (!toggleBtn.parentElement) return;
+    toggleBtn.parentElement.appendChild(themeMenu);
+
+    function getStoredThemeMode() {
+      const explicit = localStorage.getItem('themeMode');
+      if (modeOptions.indexOf(explicit) !== -1) return explicit;
+
+      const legacy = localStorage.getItem('darkMode');
+      if (legacy === '1') return 'dark';
+      if (legacy === '0') return 'light';
+      return 'system';
+    }
+
+    function updateIcons(isDark) {
+      if (!sunIcon || !moonIcon) return;
+      sunIcon.style.display = isDark ? 'none' : 'block';
+      moonIcon.style.display = isDark ? 'block' : 'none';
+    }
+
+    function setThemeMode(mode, persist) {
+      const safeMode = modeOptions.indexOf(mode) !== -1 ? mode : 'system';
+      const darkOn = safeMode === 'system' ? systemMedia.matches : safeMode === 'dark';
+
+      document.documentElement.classList.toggle('dark-mode', darkOn);
+      document.body.classList.toggle('dark-mode', darkOn);
+      updateIcons(darkOn);
+
+      if (persist !== false) {
+        localStorage.setItem('themeMode', safeMode);
+      }
+      localStorage.setItem('darkMode', darkOn ? '1' : '0');
+
+      themeMenu.querySelectorAll('[data-theme-mode]').forEach(function (option) {
+        const active = option.getAttribute('data-theme-mode') === safeMode;
+        option.classList.toggle('active', active);
+        option.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+    }
+
+    function closeThemeMenu() {
+      toggleBtn.setAttribute('aria-expanded', 'false');
+      themeMenu.setAttribute('aria-hidden', 'true');
+      themeMenu.classList.remove('open');
+    }
+
+    function openThemeMenu() {
+      toggleBtn.setAttribute('aria-expanded', 'true');
+      themeMenu.setAttribute('aria-hidden', 'false');
+      themeMenu.classList.add('open');
+    }
+
+    toggleBtn.setAttribute('aria-haspopup', 'true');
+    toggleBtn.setAttribute('aria-expanded', 'false');
+
+    // Capture phase stops old page-level click toggles from firing on this button.
+    toggleBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if (themeMenu.classList.contains('open')) closeThemeMenu();
+      else openThemeMenu();
+    }, true);
+
+    themeMenu.addEventListener('click', function (e) {
+      const option = e.target.closest('[data-theme-mode]');
+      if (!option) return;
+      const mode = option.getAttribute('data-theme-mode');
+      setThemeMode(mode, true);
+      closeThemeMenu();
+      e.stopPropagation();
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!themeMenu.contains(e.target) && !toggleBtn.contains(e.target)) {
+        closeThemeMenu();
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeThemeMenu();
+    });
+
+    if (typeof systemMedia.addEventListener === 'function') {
+      systemMedia.addEventListener('change', function () {
+        if (getStoredThemeMode() === 'system') {
+          setThemeMode('system', false);
+        }
+      });
+    } else if (typeof systemMedia.addListener === 'function') {
+      systemMedia.addListener(function () {
+        if (getStoredThemeMode() === 'system') {
+          setThemeMode('system', false);
+        }
+      });
+    }
+
+    setThemeMode(getStoredThemeMode(), false);
+  }
 
   function createSharedGearGroup() {
     const importId = 'sharedImportFileInput';
@@ -64,7 +274,10 @@
     controls.className = 'nav-controls';
 
     if (darkModeToggle) {
-      controls.appendChild(darkModeToggle);
+      const themeToggleWrap = document.createElement('div');
+      themeToggleWrap.className = 'theme-toggle-wrap';
+      themeToggleWrap.appendChild(darkModeToggle);
+      controls.appendChild(themeToggleWrap);
     }
 
     if (leftGroup) {
@@ -74,8 +287,39 @@
       controls.appendChild(leftGroup);
     }
 
+    const soundBtn = document.createElement('button');
+    soundBtn.type = 'button';
+    soundBtn.className = 'nav-sound-toggle-btn';
+    soundBtn.setAttribute('aria-label', 'Toggle page sounds');
+    controls.appendChild(soundBtn);
+    sidebarSoundToggle = soundBtn;
+
     navContainers[0].appendChild(controls);
   }
+
+  initThemeMenu(darkModeToggle);
+
+  function initStandaloneSoundToggle(toggleBtn) {
+    if (!toggleBtn) return;
+
+    function refreshSoundState() {
+      const enabled = isSoundEnabled();
+      toggleBtn.textContent = enabled ? '🔊' : '🔇';
+      toggleBtn.title = enabled ? 'Sound: ON' : 'Sound: OFF';
+      toggleBtn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+      toggleBtn.classList.toggle('is-off', !enabled);
+    }
+
+    toggleBtn.addEventListener('click', function () {
+      setSoundEnabled(!isSoundEnabled());
+      refreshSoundState();
+    });
+
+    window.addEventListener('app-sound-change', refreshSoundState);
+    refreshSoundState();
+  }
+
+  initStandaloneSoundToggle(sidebarSoundToggle);
 
   function initBackupControls(group) {
     if (!group) return;

@@ -94,6 +94,7 @@ document.getElementById("enterBtn").addEventListener("click", ()=>{
     const sound = document.getElementById("enterSound");
     const loader = document.getElementById("loaderOverlay");
   const enterBtn = document.getElementById("enterBtn");
+  const soundEnabled = localStorage.getItem("soundEnabled") !== "0";
 
   const goToDashboard = () => {
     document.body.classList.add("transitioning");
@@ -105,8 +106,11 @@ document.getElementById("enterBtn").addEventListener("click", ()=>{
   // Prevent accidental double-clicks from creating multiple navigations.
   enterBtn.disabled = true;
 
-    sound.currentTime = 0;
-  const playPromise = sound.play();
+    let playPromise = null;
+    if (soundEnabled) {
+      sound.currentTime = 0;
+      playPromise = sound.play();
+    }
 
     if (navigator.vibrate) navigator.vibrate(30);
 
@@ -124,7 +128,11 @@ document.getElementById("enterBtn").addEventListener("click", ()=>{
     };
 
     // Primary behavior: transition only after the sound finishes.
-    sound.onended = safeNavigate;
+    if (soundEnabled) {
+      sound.onended = safeNavigate;
+    } else {
+      setTimeout(safeNavigate, 120);
+    }
 
     // If audio fails to play, still continue.
     if (playPromise && typeof playPromise.catch === "function") {

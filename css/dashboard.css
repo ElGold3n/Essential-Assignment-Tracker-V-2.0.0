@@ -208,6 +208,20 @@ body {
   margin-bottom: 30px;
 }
 
+#resetFiltersBtn {
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  border: 1px solid #0770da;
+  border-radius: 6px;
+  background: #fff;
+  color: #0770da;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+#resetFiltersBtn:hover {
+  background: #eaf3ff;
+}
 .card {
   background: white;
   padding: 20px;
@@ -217,6 +231,17 @@ body {
   position: relative;
   transition: box-shadow 0.3s, transform 0.3s;
   color: #222 !important;
+}
+
+.dark-mode #resetFiltersBtn {
+  background: #23263a !important;
+  color: #e0e0e0 !important;
+  border-color: #444 !important;
+}
+
+.dark-mode #resetFiltersBtn:hover {
+  background: #2d1846 !important;
+  color: #fff !important;
 }
 .card:hover {
   box-shadow: 0 12px 32px rgba(56,182,255,0.22), 0 3px 0 #38b6ff;
@@ -483,7 +508,24 @@ th { background: #e9ecef; color: #5d7b97; }
 .notes-inline {
   margin-top: 18px !important;
   display: block;
-  white-space: pre-line;
+  white-space: normal;
+  font-family: "Inter", "Source Sans 3", "Nunito Sans", Arial, sans-serif;
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+.notes-inline strong {
+  font-weight: 600;
+}
+
+.notes-inline-first {
+  margin-top: 4px;
+  white-space: pre-wrap;
+  line-height: 1.6;
+  word-spacing: normal;
+  letter-spacing: normal;
+  font-kerning: normal;
+  font-weight: 500;
 }
 
 

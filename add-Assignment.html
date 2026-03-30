@@ -1,80 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <!-- Toast notification styles -->
-         
-        <style id="toastStyles">
-            .toast-notification {
-                position: fixed;
-                bottom: 32px;
-                right: 32px;
-                min-width: 320px;
-                max-width: 360px;
-                background: #23263a;
-                color: #e0e0e0;
-                border-radius: 10px;
-                box-shadow: 0 4px 24px rgba(0,0,0,0.18), 0 1.5px 0 #38b6ff;
-                padding: 18px 24px 18px 56px;
-                font-size: 1rem;
-                font-family: Segoe UI, Arial, sans-serif;
-                z-index: 9999;
-                opacity: 0;
-                pointer-events: none;
-                display: flex;
-                align-items: center;
-                gap: 16px;
-                transition: opacity 0.4s, transform 0.4s;
-                transform: translateY(40px);
-            }
-            .toast-notification.visible {
-                opacity: 1;
-                pointer-events: auto;
-                transform: translateY(0);
-            }
-            .toast-icon {
-                position: absolute;
-                left: 20px;
-                top: 50%;
-                transform: translateY(-50%);
-                width: 28px;
-                height: 28px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .toast-close {
-                margin-left: auto;
-                background: none;
-                border: none;
-                color: #e0e0e0;
-                font-size: 1.2rem;
-                cursor: pointer;
-                opacity: 0.7;
-                transition: opacity 0.2s;
-            }
-            .toast-close:hover {
-                opacity: 1;
-            }
-            .dark-mode .toast-notification {
-                background: #23263a;
-                color: #e0e0e0;
-            }
-            .toast-notification {
-                background: #f8f9fa;
-                color: #23263a;
-            }
-            .dark-mode .toast-notification {
-                background: #23263a;
-                color: #e0e0e0;
-            }
-        </style>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Essential Assignment Tracker - Add New Assignment</title>
 
     <link rel="stylesheet" href="css/add-Assignment.css">
     <link rel="stylesheet" href="css/shared-nav.css">
+    <link rel="stylesheet" href="css/toast.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&family=Nunito+Sans:wght@400;500;600&display=swap">
+    <script src="js/toast.js"></script>
     <script src="js/shared-nav.js" defer></script>
+    <script src="js/time-display.js" defer></script>
 </head>
 <body>
 
@@ -93,42 +30,15 @@
     <div style="display: flex; align-items: center; width: 100%; justify-content: space-between;">
         <h1 style="margin: 0; font-size: 1.5rem; color: #f2e7f4; display: flex; align-items: center;">🎓 Essential Assignment Tracker
             <button id="darkModeToggle" aria-label="Toggle dark mode" style="background:none;border:none;cursor:pointer;margin-left:12px;vertical-align:middle;outline:none;position:relative;">
-                <span id="darkModeIcon" style="display:inline-block;width:32px;height:32px;vertical-align:middle;">
-
-                    <!-- Sun SVG for light mode -->
-                    <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="32" height="32" style="display:block;">
-                        <circle cx="24" cy="24" r="10" fill="#ffe066" stroke="#f9c846" stroke-width="2"/>
-                        <g stroke="#f9c846" stroke-width="2">
-                            <line x1="24" y1="4" x2="24" y2="12"/>
-                            <line x1="24" y1="36" x2="24" y2="44"/>
-                            <line x1="4" y1="24" x2="12" y2="24"/>
-                            <line x1="36" y1="24" x2="44" y2="24"/>
-                            <line x1="10.93" y1="10.93" x2="16.97" y2="16.97"/>
-                            <line x1="31.03" y1="31.03" x2="37.07" y2="37.07"/>
-                            <line x1="10.93" y1="37.07" x2="16.97" y2="31.03"/>
-                            <line x1="31.03" y1="16.97" x2="37.07" y2="10.93"/>
-                        </g>
-                    </svg>
-                    <!-- Moon SVG for dark mode -->
-                    <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="32" height="32" style="display:none;">
-                        <path d="M34 24c0 7-5.5 12-12 12-2.5 0-4.8-0.7-6.7-2 6.2-1.1 10.7-6.2 10.7-12.1 0-3.2-1.2-6.1-3.2-8.3C25.2 13.2 34 15.7 34 24z" fill="#b411cf" stroke="#fff" stroke-width="2"/>
-                        <circle cx="30" cy="20" r="2" fill="#fff" opacity="0.7"/>
-                        <circle cx="26" cy="28" r="1.2" fill="#fff" opacity="0.5"/>
-                    </svg>
+                <span id="darkModeIcon" style="display:inline-block;width:42px;height:42px;vertical-align:middle;">
+                    <img id="sunIcon" src="Icons/day.png" alt="Light mode" width="42" height="42" style="display:block;object-fit:contain;" loading="lazy" decoding="async">
+                    <img id="moonIcon" src="Icons/night.png" alt="Dark mode" width="42" height="42" style="display:none;object-fit:contain;" loading="lazy" decoding="async">
                 </span>
-                <span style="position:absolute;top:40px;left:0;width:180px;background:#23263a;color:#e0e0e0;font-size:0.92rem;padding:6px 12px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.12);display:none;z-index:100;" id="darkModeHint">Toggle dark mode for easier viewing</span>
             </button>
         </h1>
+        <div id="timeDisplay" style="margin-right:50px;"></div>
         <div class="nav" data-shared-nav></div>
     </div>
-    <script>
-        // Show hint on hover
-
-        const darkModeToggleBtn = document.getElementById('darkModeToggle');
-        const darkModeHint = document.getElementById('darkModeHint');
-        darkModeToggleBtn.addEventListener('mouseenter',()=>{darkModeHint.style.display='block';});
-        darkModeToggleBtn.addEventListener('mouseleave',()=>{darkModeHint.style.display='none';});
-    </script>
 </div>
 
 <!-- Main content area -->
@@ -149,7 +59,8 @@
             <tr>
                 <td class="label">Module / Course:</td>
                 <td class="input">
-                    <input type="text" name="module" placeholder="e.g. COM101 / Mathematics 202" required />
+                    <input type="text" name="module" list="moduleSuggestions" placeholder="e.g. COM101 / Mathematics 202" required />
+                    <datalist id="moduleSuggestions"></datalist>
                 </td>
             </tr>
             <tr>
@@ -201,6 +112,10 @@
         const saveSound = document.getElementById('saveSound');
         const updateSound = document.getElementById('updateSound');
         saveBtn.addEventListener('click', function(e) {
+            const soundEnabled = typeof window.isAppSoundEnabled === 'function'
+                ? window.isAppSoundEnabled()
+                : localStorage.getItem('soundEnabled') !== '0';
+            if (!soundEnabled) return;
             // Determine if this is an update or save by button text
             if (saveBtn.textContent.trim().toLowerCase().includes('update')) {
                 updateSound.currentTime = 0;
@@ -240,61 +155,6 @@
         
 // Toast notification logic (Windows style)
 
-// This function shows a pop-up message to the user when an assignment is saved or updated.
-
-// It uses SVG icons for info and check marks, and auto-hides after a few seconds.
-
-function showNotification(message, options = {}) {
-    const toastContainer = document.getElementById('toastContainer'); // Container for toast messages
-
-    // Before showing a new toast notification, remove any previous notification from the screen.
-
-    // This ensures that only one toast message is visible at a time, so the user doesn't get confused by multiple pop-ups.
-
-    toastContainer.innerHTML = '';
-
-    // Choose which icon to show in the toast notification.
-
-    // If the notification is for success (like saving), show a check mark icon.
-
-    // Otherwise, show an info icon. These icons are SVG images that appear in the pop-up message.
-
-    const iconSVG = options.icon === 'check' ?
-        `<svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="14" fill="#38b6ff"/><path d="M8 14.5l4 4 8-8" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>` :
-        `<svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="14" fill="#38b6ff"/><path d="M14 8v8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><circle cx="14" cy="20" r="1.5" fill="#fff"/></svg>`;
-
-    // Create the HTML for the toast notification.
-
-    // This builds the pop-up message box that appears in the corner of the screen.
-
-    const toast = document.createElement('div');
-    toast.className = 'toast-notification';
-    toast.innerHTML = `
-        <span class="toast-icon">${iconSVG}</span>
-        <span>${message}</span>
-        <button class="toast-close" aria-label="Close notification">&times;</button>
-    `;
-    // This code makes the 'X' close button on the toast notification work.
-    
-    // When the user clicks the close button, the notification fades out and is removed from the page.
-
-    toast.querySelector('.toast-close').onclick = () => {
-        toast.classList.remove('visible');
-        setTimeout(() => toast.remove(), 400);
-    };
-    toastContainer.appendChild(toast);
-
-    // Show toast system notification with animation
-    
-    setTimeout(() => toast.classList.add('visible'), 10);
-
-    // Auto-hide after 3.5s
-    
-    setTimeout(() => {
-        toast.classList.remove('visible');
-        setTimeout(() => toast.remove(), 400);
-    }, options.duration || 3500);
-}
 // Update status preview when dropdown changes 
 
 // This updates the colored status badge when the user selects a new status in the form.
@@ -318,6 +178,32 @@ document.getElementById('statusSelect').addEventListener('change', function(e) {
 // This section loads an assignment for editing if the user clicked 'edit' on the main page.
 
 // It fills the form with the assignment's details so the user can update them.
+
+function populateModuleSuggestions() {
+
+    let assignments = [];
+    try {
+        assignments = JSON.parse(localStorage.getItem('assignments')) || [];
+    } catch {}
+
+    const moduleList = document.getElementById('moduleSuggestions');
+    if (!moduleList) return;
+
+    const modules = [...new Set(
+        assignments
+            .map(a => (a.module || '').trim())
+            .filter(Boolean)
+    )].sort((a, b) => a.localeCompare(b));
+
+    moduleList.innerHTML = '';
+    modules.forEach(moduleName => {
+        const option = document.createElement('option');
+        option.value = moduleName;
+        moduleList.appendChild(option);
+    });
+}
+
+populateModuleSuggestions();
 
 function getQueryParam(param) {
 
@@ -418,61 +304,4 @@ document.getElementById('assignmentForm').addEventListener('submit', function(e)
 </div>
 
 </body>
-<script>
-
-// Dark mode toggle logic with sun/moon icons
-
-// This section enables the user to switch between light and dark themes.
-
-// The sun icon is shown in light mode, and the moon icon in dark mode.
-
-const darkModeToggle = document.getElementById('darkModeToggle'); // Button for toggling theme
-
-const sunIcon = document.getElementById('sunIcon'); // Sun SVG for light mode
-
-const moonIcon = document.getElementById('moonIcon'); // Moon SVG for dark mode
-
-// Function to set dark mode on or off and save the user's preference in localStorage
-
-function setDarkMode(on) {
-
-        // Add smooth transition for background and color when toggling dark mode, so it doesn't switch abruptly. The transition makes the theme change feel more polished and less jarring to the user.
-        
-        document.body.style.transition = 'background 3s, color 1s';
-
-    // Toggle the 'dark-mode' class on the root element to switch themes. The CSS will define different styles for light and dark modes based on this class.
-    
-    document.documentElement.classList.toggle('dark-mode', on);
-
-    // Show moon icon in dark mode, sun icon in light mode by changing their display styles
-
-    if (on) {
-        sunIcon.style.display = 'none';
-        moonIcon.style.display = 'block';
-    } else {
-        sunIcon.style.display = 'block';
-        moonIcon.style.display = 'none';
-    }
-    // Save the user's preference in localStorage so that when they return to the site, it will load in their chosen theme instead of defaulting to the system preference. This makes the experience more personalized and consistent across visits.
-
-    localStorage.setItem('darkMode', on ? '1' : '0');
-}
-
-// Detect system preference or saved setting for dark mode and apply it on page load. This ensures that the site respects the user's system settings by default, but also allows them to override it with their own preference that will be remembered for future visits.
-
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-const saved = localStorage.getItem('darkMode');
-const dark = saved === null ? prefersDark : saved === '1';
-setDarkMode(dark);
-
-// When the toggle button is clicked, switch the theme and update the icons accordingly. This allows users to manually choose their preferred theme regardless of their system settings.
-
-// This lets the user manually change between light and dark mode by clicking the button, and the icons will update to reflect the current mode. The user's choice is remembered for future visits.
-
-// The icon updates automatically when the user toggles the theme, providing visual feedback about which mode is active. The preference is saved so that when the user returns to the site, it will load in their chosen theme.
-
-darkModeToggle.addEventListener('click', () => {
-    setDarkMode(!document.documentElement.classList.contains('dark-mode'));
-});
-</script>
 </html>

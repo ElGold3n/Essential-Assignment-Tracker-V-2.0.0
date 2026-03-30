@@ -55,6 +55,30 @@
 .assignment-card.artificial-intelligence { border-left-color: var(--artificial-intelligence); }
 .assignment-card.database-systems { border-left-color: var(--database-systems); }
 .assignment-card.devops-global-online { border-left-color: var(--devops-global-online); }
+
+.notes-inline {
+  margin-top: 18px !important;
+  display: block;
+  white-space: normal;
+  font-family: "Inter", "Source Sans 3", "Nunito Sans", Arial, sans-serif;
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+.notes-inline strong {
+  font-weight: 600;
+}
+
+.notes-inline-first {
+  margin-top: 4px;
+  white-space: pre-wrap;
+  line-height: 1.6;
+  word-spacing: normal;
+  letter-spacing: normal;
+  font-kerning: normal;
+  font-weight: 500;
+}
+
 .priority {
   font-size: 0.85rem;
   padding: 4px 10px;
@@ -167,10 +191,10 @@
 
  * It overrides the normal (light) colors with darker ones for better visibility and comfort.
  */
-.dark-mode body {
-
-  /* background removed, handled by .dark-mode .container */
-
+.dark-mode body,
+html.dark-mode,
+body.dark-mode {
+  background: #0d1117 !important;
   color: #e0e0e0;
   transition: color 1s;
 }
