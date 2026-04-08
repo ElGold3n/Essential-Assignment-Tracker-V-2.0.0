@@ -1,9 +1,4 @@
-// Interactive calendar with assignment dots
-// Requires: container with id="calendarContainer" in HTML
-// Expects assignments as array of { due: 'YYYY-MM-DD', ... }
-
-
-// Enhanced calendar with tooltips, today highlight, multi-day, color coding, week/month toggle, mobile, accessibility
+// Calendar UI for choosing dates and showing assignment dots.
 function renderCalendar(assignments, selectedDate, onDateSelect, viewMode = 'month', onDateDoubleClick) {
     const container = document.getElementById('calendarContainer');
     if (!container) return;
@@ -17,7 +12,7 @@ function renderCalendar(assignments, selectedDate, onDateSelect, viewMode = 'mon
     const startDay = firstDay.getDay();
     const daysInMonth = lastDay.getDate();
 
-    // Collect assignment info for this month (and week if needed)
+    // Build a list of assignments for each day.
     const dots = {};
     assignments.forEach((a, index) => {
         if (!a.due) return;
@@ -27,7 +22,7 @@ function renderCalendar(assignments, selectedDate, onDateSelect, viewMode = 'mon
             if (!dots[day]) dots[day] = [];
             dots[day].push({ assignment: a, index });
         }
-        // Multi-day support: if a.start and a.end exist, mark all days in range
+        // If assignment has start/end, mark each day in that range.
         if (a.start && a.end) {
             let start = new Date(a.start), end = new Date(a.end);
             if (!isNaN(start) && !isNaN(end)) {
@@ -42,7 +37,7 @@ function renderCalendar(assignments, selectedDate, onDateSelect, viewMode = 'mon
         }
     });
 
-    // Header with week/month toggle
+    // Header with month name and view toggle.
     const header = document.createElement('div');
     header.className = 'calendar-header';
     header.innerHTML = `
@@ -53,7 +48,7 @@ function renderCalendar(assignments, selectedDate, onDateSelect, viewMode = 'mon
     `;
     container.appendChild(header);
 
-    // Days of week
+    // Weekday labels.
     const daysRow = document.createElement('div');
     daysRow.className = 'calendar-days-row';
     ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d => {
@@ -64,20 +59,20 @@ function renderCalendar(assignments, selectedDate, onDateSelect, viewMode = 'mon
     });
     container.appendChild(daysRow);
 
-    // Dates grid
+    // Main date grid.
     const grid = document.createElement('div');
     grid.className = 'calendar-grid';
     let start = 1, end = daysInMonth;
     let weekStart = 1, weekEnd = daysInMonth;
     if (viewMode === 'week') {
-        // Show only the week containing selectedDate
+        // Week view shows only the selected week.
         const weekDay = selectedDate.getDay();
         weekStart = selectedDate.getDate() - weekDay;
         weekEnd = weekStart + 6;
         start = Math.max(1, weekStart);
         end = Math.min(daysInMonth, weekEnd);
     }
-    // Fill empty cells before first day (month view only)
+    // Add blank cells before the first day in month view.
     if (viewMode === 'month') {
         for (let i = 0; i < startDay; i++) {
             const empty = document.createElement('div');
@@ -100,7 +95,7 @@ function renderCalendar(assignments, selectedDate, onDateSelect, viewMode = 'mon
         }
         cell.textContent = day;
         if (dots[day]) {
-            // Color coding: status (overdue, due soon, completed, active)
+            // Dot color is based on assignment status.
             let status = 'active';
             for (const item of dots[day]) {
                 const a = item.assignment;
@@ -111,14 +106,14 @@ function renderCalendar(assignments, selectedDate, onDateSelect, viewMode = 'mon
             const dot = document.createElement('span');
             dot.className = 'calendar-dot calendar-dot-' + status;
             dot.style.cursor = 'pointer';
-            // Tooltip with assignment titles
+            // Tooltip shows assignment names for that day.
             const tooltip = dots[day].map(item => {
                 const a = item.assignment;
                 return a.name || a.Assignment_name || a.title || 'Assignment';
             }).join(', ');
             dot.title = tooltip;
             cell.appendChild(dot);
-            // Also set tooltip on the cell for easier hover
+            // Put same tooltip on the date cell.
             cell.title = tooltip;
         }
         cell.addEventListener('click', () => {
@@ -150,7 +145,7 @@ function renderCalendar(assignments, selectedDate, onDateSelect, viewMode = 'mon
     }
     container.appendChild(grid);
 
-    // Navigation
+    // Month/week navigation buttons.
     document.getElementById('prevMonth').onclick = () => {
         const prev = viewMode === 'month' ? new Date(year, month - 1, 1) : new Date(year, month, Math.max(1, selectedDate.getDate() - 7));
         renderCalendar(assignments, prev, onDateSelect, viewMode, onDateDoubleClick);
@@ -164,7 +159,7 @@ function renderCalendar(assignments, selectedDate, onDateSelect, viewMode = 'mon
     };
 }
 
-// Enhanced CSS styles for the calendar (inject if not present)
+// Inject calendar styles once.
 (function injectCalendarStyles() {
     if (document.getElementById('calendarStyles')) return;
     const style = document.createElement('style');

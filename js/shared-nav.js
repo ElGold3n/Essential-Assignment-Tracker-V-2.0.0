@@ -1,4 +1,5 @@
 (function () {
+  // Builds and manages the shared sidebar/navigation across pages.
   const navContainers = document.querySelectorAll('.nav[data-shared-nav]');
   if (!navContainers.length) return;
 
@@ -65,7 +66,7 @@
   navContainers.forEach(function (container) {
     container.innerHTML = html;
 
-    // Profile picture upload handler - attach to each container
+    // Profile image upload controls.
     const userProfilePicker = container.querySelector('.user-profile-picker');
     const userProfileInput = container.querySelector('.user-profile-input');
     const userProfileRemove = container.querySelector('.nav-user-remove');
@@ -204,7 +205,7 @@
     toggleBtn.setAttribute('aria-haspopup', 'true');
     toggleBtn.setAttribute('aria-expanded', 'false');
 
-    // Capture phase stops old page-level click toggles from firing on this button.
+    // Capture click first so old page handlers do not conflict.
     toggleBtn.addEventListener('click', function (e) {
       e.preventDefault();
       e.stopImmediatePropagation();

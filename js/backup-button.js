@@ -1,23 +1,16 @@
-/*
-  backup-button.js (refactored – no programmatic .click())
-  -------------------------------------------------------
-  Changes:
-  - Removed restoreBtn and importFileInput.click()
-  - Uses <label for="importFileInput"> instead → native, reliable file dialog trigger
-  - closeMenu() simplified (no setTimeout needed for this case)
-*/
+/* Handles backup/export and restore/import from the gear menu. */
 
 (function () {
-  // DOM elements
+  // Main menu elements.
   const backupBtn = document.getElementById('backupBtn');
   const backupMenu = document.getElementById('backupMenu');
   const exportBtn = document.getElementById('exportBtn');
   const importFileInput = document.getElementById('importFileInput');
 
-  // Early exit if core elements missing
+  // Stop if menu is not on this page.
   if (!backupBtn || !backupMenu) return;
 
-  // Initialize menu hidden
+  // Start with menu hidden.
   backupMenu.setAttribute('aria-hidden', 'true');
   backupBtn.setAttribute('aria-expanded', 'false');
   backupMenu.style.display = 'none';
@@ -29,7 +22,7 @@
     backupBtn.setAttribute('aria-expanded', 'false');
     backupMenu.style.opacity = '0';
     backupMenu.style.pointerEvents = 'none';
-    backupMenu.style.display = 'none'; // immediate – no timeout needed here
+    backupMenu.style.display = 'none';
   }
 
   function openMenu() {
@@ -42,7 +35,7 @@
     }, 10);
   }
 
-  // Toggle menu on gear click
+  // Open or close menu on gear click.
   backupBtn.addEventListener('click', function (e) {
     const isOpen = backupMenu.getAttribute('aria-hidden') === 'false';
     if (isOpen) closeMenu();
@@ -50,19 +43,19 @@
     e.stopPropagation();
   });
 
-  // Close on outside click
+  // Close menu when user clicks outside.
   document.addEventListener('click', function (e) {
     if (!backupMenu.contains(e.target) && e.target !== backupBtn) {
       closeMenu();
     }
   });
 
-  // Esc to close
+  // Close menu with Escape key.
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closeMenu();
   });
 
-  // Export (unchanged – works great)
+  // Export all localStorage data to a JSON file.
   if (exportBtn) {
     exportBtn.addEventListener('click', function () {
       try {
@@ -95,7 +88,7 @@
     });
   }
 
-  // Import – now triggered by label click → file input change
+  // Import data from selected JSON file.
   if (importFileInput) {
     importFileInput.addEventListener('change', function (ev) {
       const file = ev.target.files?.[0];
@@ -137,13 +130,13 @@
       };
       reader.readAsText(file);
 
-      // Optional: reset input for next use
+      // Reset input so the same file can be selected again.
       importFileInput.value = '';
       closeMenu();
     });
   }
 
-  console.log('[backup-button] initialized (label-based import)');
+  console.log('[backup-button] initialized');
   try {
     window.backupButtonInitialized = true;
   } catch (e) {}

@@ -1,5 +1,4 @@
-// export-button.js
-// Simple export script for assignment tracker
+// Export local data as a JSON backup file.
 
 (function () {
   const exportBtn = document.getElementById('exportBtn');

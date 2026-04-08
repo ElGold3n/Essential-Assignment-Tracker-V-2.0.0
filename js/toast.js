@@ -1,4 +1,5 @@
 (function () {
+  // Reusable toast popup for success/info messages.
   function getToastContainer() {
     return document.getElementById('toastContainer');
   }
