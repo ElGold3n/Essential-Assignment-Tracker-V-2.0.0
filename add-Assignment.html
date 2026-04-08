@@ -15,17 +15,11 @@
 </head>
 <body>
 
-<!--
-    This is the container where toast notifications (pop-up messages) will appear on the screen.
-
-    When the user saves or updates an assignment, a small message box will show up here to confirm the action.
-    
-    Only one toast notification is shown at a time, and it disappears automatically after a few seconds or when closed.
--->
+<!-- Toast messages appear here after save/update actions. -->
 
 <div id="toastContainer" style="position:fixed;z-index:9999;pointer-events:none;"></div>
 
-<!-- Header section with navigation -->
+<!-- Top header with title, time, dark mode, and nav links -->
 <div class="header">
     <div style="display: flex; align-items: center; width: 100%; justify-content: space-between;">
         <h1 style="margin: 0; font-size: 1.5rem; color: #f2e7f4; display: flex; align-items: center;">🎓 Essential Assignment Tracker
@@ -41,12 +35,12 @@
     </div>
 </div>
 
-<!-- Main content area -->
+<!-- Main add-assignment section -->
 
 <div class="content">
     <h2>Add New Assignment</h2>
 
-    <!-- Form for adding a new Assignment -->
+    <!-- Form used to add or edit an assignment -->
      
     <form id="assignmentForm">
         <table class="form-table">
@@ -116,7 +110,7 @@
                 ? window.isAppSoundEnabled()
                 : localStorage.getItem('soundEnabled') !== '0';
             if (!soundEnabled) return;
-            // Determine if this is an update or save by button text
+            // Play update sound if editing, otherwise play save sound
             if (saveBtn.textContent.trim().toLowerCase().includes('update')) {
                 updateSound.currentTime = 0;
                 updateSound.play();
@@ -125,12 +119,12 @@
                 saveSound.play();
             }
         });
-            // Load assignments for calendar dots
+            // Load saved assignments so dots appear on the calendar
             let assignments = [];
             try {
                 assignments = JSON.parse(localStorage.getItem('assignments')) || [];
             } catch {}
-            // Set initial date (today or edit value)
+            // Start with today, or use the current assignment due date in edit mode
             let initialDate = new Date();
             const editIdx = (function() {
                 const urlParams = new URLSearchParams(window.location.search);
@@ -146,7 +140,7 @@
                 const d = String(date.getDate()).padStart(2, '0');
                 return `${y}-${m}-${d}`;
             }
-            // Set hidden input value
+            // Keep the hidden due date input synced with the calendar
             function setDueDate(date) {
                 document.getElementById('dueDateInput').value = toLocalIsoDate(date);
             }
@@ -183,18 +177,14 @@
 
     <script>
         
-// Toast notification logic (Windows style)
-
-// Update status preview when dropdown changes 
-
-// This updates the colored status badge when the user selects a new status in the form.
+// Update the status preview badge when status changes.
 
 document.getElementById('statusSelect').addEventListener('change', function(e) {
     const val = e.target.value;
     const preview = document.getElementById('statusPreview');
     preview.textContent = val;
 
-    // Map status to class for color coding: Active = blue, Due Soon = orange, Overdue = red, Completed = green. This gives the user a visual cue about the status of the assignment based on color.
+    // Use a color class that matches the selected status.
 
     let statusClass = 'status-preview ';
     if (val === 'Active') statusClass += 'status-Active';
@@ -205,9 +195,7 @@ document.getElementById('statusSelect').addEventListener('change', function(e) {
     preview.className = statusClass;
 });
 
-// This section loads an assignment for editing if the user clicked 'edit' on the main page.
-
-// It fills the form with the assignment's details so the user can update them.
+// Fill module suggestions from previously saved assignments.
 
 function populateModuleSuggestions() {
 
@@ -251,7 +239,7 @@ function toLocalIsoDate(date) {
 const editIdx = getQueryParam('edit');
 if (editIdx !== null) {
 
-    // Load assignment for editing based on the index passed in the URL query parameter. This allows the form to be used for both adding new assignments and editing existing ones, depending on whether an 'edit' parameter is present in the URL.
+    // If there is an edit index in the URL, load that assignment into the form.
 
     let assignments = [];
     try {
@@ -262,7 +250,7 @@ if (editIdx !== null) {
         document.querySelector('input[name="Assignment_name"]').value = assignment.name;
         document.querySelector('input[name="module"]').value = assignment.module;
 
-        // Parse date for input field (expects format like "Mar 15, 2025") and convert to "YYYY-MM-DD" for the date input. This allows the form to show the correct due date when editing an assignment.
+        // Convert saved due date into the input's YYYY-MM-DD format.
 
         let dateObj = new Date(assignment.due);
         if (!isNaN(dateObj)) {
@@ -271,7 +259,7 @@ if (editIdx !== null) {
         document.querySelector('select[name="status"]').value = assignment.status;
         document.querySelector('textarea[name="notes"]').value = assignment.notes || '';
 
-        // Change button text to "Update Assignment" when editing an existing assignment, to make it clear to the user that they are updating rather than creating a new assignment.
+        // Show that this form submit will update instead of create.
 
         document.querySelector('.save-btn').textContent = 'Update Assignment';
     }
@@ -279,27 +267,21 @@ if (editIdx !== null) {
 
 document.getElementById('assignmentForm').addEventListener('submit', function(e) {
 
-    e.preventDefault(); // Stop the page from reloading when the form is submitted, so the data is handledwith JavaScript.
+    e.preventDefault(); // Keep the page from reloading so JS can save data.
 
-        // Show confirmation popup before saving or updating
-
-        // This uses the browser's default confirm dialog to prompt the user
-
-        // If editing, the message asks to confirm updating; otherwise, it asks to confirm adding
-
-        // If the user clicks Cancel, the assignment is NOT saved
+        // Ask the user to confirm save/update before continuing.
 
         const confirmMsg = editIdx !== null
             ? 'Are you sure you want to update this assignment?\n\nPlease review your changes before saving.'
             : 'Are you sure you want to add this assignment?\n\nPlease review your details before saving.';
         if (!window.confirm(confirmMsg)) {
-                // User cancelled, do not proceed with saving
+                // Stop if user cancels.
                 return;
         }
 
     const form = e.target;
 
-    // Get values from the form
+    // Read form values.
 
     const name = form.Assignment_name.value.trim();
     const module = form.module.value.trim();
@@ -316,26 +298,26 @@ document.getElementById('assignmentForm').addEventListener('submit', function(e)
     } catch {}
     if (editIdx !== null && assignments[parseInt(editIdx)]) {
         
-        // Update existing assignment
+        // Replace existing assignment.
         
         assignments[parseInt(editIdx)] = { name, Assignment_name: name, module, due: displayDue, status, notes };
 
     } else {
-        // Add new assignment
+        // Add a new assignment.
 
         assignments.push({ name, Assignment_name: name, module, due: displayDue, status, notes });
     }
-    // Save assignments to localStorage as a JSON string. This allows the data to persist in the browser so that when the user returns to the site, their assignments will still be there.
+    // Save to localStorage so data stays after refresh.
 
     localStorage.setItem('assignments', JSON.stringify(assignments));
 
-    // Set a flag in sessionStorage to show a notification on the homepage after redirecting back. This lets the homepage know whether to show a "saved" or "updated" message to the user, providing feedback that their action was successful.
+    // Set message type for dashboard toast after redirect.
     if (editIdx !== null) {
         sessionStorage.setItem('assignmentStatus', 'updated');
     } else {
         sessionStorage.setItem('assignmentStatus', 'saved');
     }
-    // Redirect to home page after saving or updating the assignment, and show a notification there confirming the action. The notification will say "Assignment saved!" or "Assignment updated!" depending on whether it was a new assignment or an edit.
+    // Return to dashboard after save/update.
     setTimeout(function() {
         window.location.href = 'dashboard.html';
     }, 600);
