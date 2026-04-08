@@ -344,15 +344,15 @@
             const pastDays = Math.abs(daysLeft);
             return {
               text: pastDays === 1 ? 'Completed 1 day ago' : `Completed ${pastDays} days ago`,
-              color: '#22c55e'
+              color: '#b411cf'
             };
           }
 
-          if (daysLeft === 0) return { text: 'Completed today', color: '#22c55e' };
+          if (daysLeft === 0) return { text: 'Completed today', color: '#b411cf' };
 
           return {
             text: daysLeft === 1 ? 'Completed 1 day early' : `Completed ${daysLeft} days early`,
-            color: '#22c55e'
+            color: '#b411cf'
           };
         }
 
@@ -360,21 +360,21 @@
           const overdueDays = Math.abs(daysLeft);
           return {
             text: overdueDays === 1 ? '1 day overdue' : `${overdueDays} days overdue`,
-            color: '#e74c3c'
+            color: '#000000'
           };
         }
 
-        if (daysLeft === 0) return { text: 'Due today', color: '#f59e0b' };
+        if (daysLeft === 0) return { text: 'Due today', color: '#b45309' };
         if (daysLeft <= 3) {
           return {
             text: daysLeft === 1 ? '1 day left' : `${daysLeft} days left`,
-            color: '#f59e0b'
+            color: '#b45309'
           };
         }
 
         return {
           text: daysLeft === 1 ? '1 day left' : `${daysLeft} days left`,
-          color: '#2563eb'
+          color: '#1e3a8a'
         };
       }
 
