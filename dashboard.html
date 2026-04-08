@@ -1,15 +1,5 @@
-<!--
-  Essential Assignment Tracker - Home Page
-
-  This web page lets you view, add, edit, and delete assignments.
-
-  It uses HTML for structure, CSS for styling, and JavaScript for logic and interactivity.
--->
-<!--
-    Main styles for the home page can be found in css/index.css for maintainability and clarity.
-
-    Toast notification styles are inlined for functionality.
--->
+<!-- Dashboard page: view, filter, edit, and delete assignments. -->
+<!-- Styling is from dashboard.css and shared-nav.css. -->
 <link rel="stylesheet" href="css/dashboard.css">
 <link rel="stylesheet" href="css/shared-nav.css">
 <link rel="stylesheet" href="css/toast.css">
@@ -41,7 +31,7 @@
     pointer-events:all;
 }
 
-/* Pre-paint transition state so blur is visible before content appears */
+/* Keep loader visible before full page reveal */
 html.preload-transition-pending .header,
 html.preload-transition-pending .content {
     opacity: 1;
@@ -81,21 +71,21 @@ if (localStorage.getItem("loadingTransition") === "true") {
 </head>
 
 <body>
-    <!-- Loader Overlay -->
+    <!-- Loader overlay -->
     <div id="loaderOverlay">
             <div class="spinner"></div>
     </div>
 
-<!-- Toast notification container for pop-up messages -->
+<!-- Toast messages appear here -->
 
 <div id="toastContainer" style="position:fixed;z-index:9999;pointer-events:none;"></div>
 
-<!-- Top navigation bar -->
+<!-- Top header -->
 
 <div class="header" style="display:flex;align-items:center;justify-content:space-between;">
     <h1 style="flex:1;">🎓 Essential Assignment Tracker
 
-        <!-- Dark mode toggle button with sun/moon icons -->
+        <!-- Dark mode toggle -->
 
         <button id="darkModeToggle" aria-label="Toggle dark mode" style="background:none;border:none;cursor:pointer;margin-left:12px;vertical-align:middle;outline:none;position:relative;">
             <span id="darkModeIcon" style="display:inline-block;width:42px;height:42px;vertical-align:middle;">
@@ -106,23 +96,23 @@ if (localStorage.getItem("loadingTransition") === "true") {
     </h1>
     <div id="timeDisplay" style="margin-right:50px;"></div>
 
-    <!-- Navigation menu links -->
+    <!-- Shared nav links -->
 
     <div class="nav" data-shared-nav></div>
 </div>
-<!-- Main page content -->
+<!-- Main content -->
 
 <div class="content">
     
-    <!-- Counter cards showing a quick overview -->
+    <!-- Summary cards -->
 
     <div class="stats" id="stats">
 
-        <!-- Cards will be rendered by JS -->
+        <!-- Cards rendered by JS -->
     </div>
     <h2>Upcoming Assignments</h2>
 
-    <!-- Search and filter options for Assignments -->
+    <!-- Search and filters -->
      
     <div class="controls">
         <input type="text" id="searchInput" placeholder="Search Assignments..." />
@@ -139,7 +129,7 @@ if (localStorage.getItem("loadingTransition") === "true") {
         <button type="button" id="resetFiltersBtn">Reset Filters</button>
     </div>
 
-    <!-- Assignment table -->
+    <!-- Assignments table -->
 
     <table>
         <thead>
@@ -153,11 +143,11 @@ if (localStorage.getItem("loadingTransition") === "true") {
         </thead>
         <tbody id="assignmentTable">
 
-            <!-- Assignment rows rendered by JS -->
+            <!-- Rows rendered by JS -->
         </tbody>
     </table>
 
-    <!-- Button to navigate to the add Assignment page and Delete Assignment button -->
+    <!-- Add and delete controls -->
 
         <div style="display: flex; gap: 12px; margin-top: 25px;">
                 <a href="add-Assignment.html" class="add-btn" id="addAssignmentBtn">+ Add New Assignment</a>
@@ -178,7 +168,7 @@ if (localStorage.getItem("loadingTransition") === "true") {
     </style>
         <script>
 
-        // Smoke effect for add and delete buttons
+        // Hover smoke effect for Add/Delete buttons.
 
         function addSmokeEffect(btn, color) {
             let smoke = null;
@@ -202,16 +192,16 @@ if (localStorage.getItem("loadingTransition") === "true") {
             btn.addEventListener('mousemove', e => {
                 if (!smoke) return;
 
-                // Position the smoke above the button, following the mouse but not offset from the button area
+                // Move smoke with the mouse over the button.
 
                 const rect = btn.getBoundingClientRect();
 
-                // Clamp the smoke to stay within the button bounds
+                // Keep smoke inside button bounds.
 
                 let x = e.clientX - 30;
                 let y = e.clientY - 30;
 
-                // If mouse is outside button, clamp to button edge
+                // Clamp to edge if cursor leaves button area.
                 
                 if (e.clientX < rect.left) x = rect.left;
                 if (e.clientX > rect.right) x = rect.right - 60;
@@ -246,7 +236,7 @@ if (localStorage.getItem("loadingTransition") === "true") {
         </script>
 </div>
 <script>
-// Loader overlay reveal on page load if coming from transition
+// Show loader when entering from the welcome page transition.
 window.addEventListener("load", () => {
     const loader = document.getElementById("loaderOverlay");
     const fromTransition = localStorage.getItem("loadingTransition") === "true";
@@ -254,7 +244,7 @@ window.addEventListener("load", () => {
     const soundEnabled = localStorage.getItem("soundEnabled") !== "0";
     let loaderHoldMs = 600;
 
-    // Try to continue ui-tap.wav on dashboard from the last known playback position.
+    // Resume entry sound if it was already playing.
     if (syncRaw && soundEnabled) {
         try {
             const sync = JSON.parse(syncRaw);
@@ -293,7 +283,7 @@ window.addEventListener("load", () => {
         document.documentElement.classList.remove("preload-transition-pending");
     }
 });
-// Get all assignments from localStorage, marking overdue ones
+// Date helpers and assignment loading.
 
 function parseDueDate(value) {
     if (!value) return null;
@@ -327,12 +317,12 @@ function toDisplayDueDate(date) {
 
 function getAssignments() {
 
-    // Try to load assignments from localStorage
+    // Load assignments from localStorage.
 
     const data = localStorage.getItem('assignments');
     let arr = data ? JSON.parse(data) : [];
 
-    // Mark overdue assignments only
+    // Auto-update status based on due date.
 
     const today = new Date();
     today.setHours(0,0,0,0);
@@ -359,7 +349,7 @@ function getAssignments() {
     return arr;
 }
 
-// Save assignments to localStorage
+// Save assignments to localStorage.
 
 function saveAssignments(arr) {
     localStorage.setItem('assignments', JSON.stringify(arr));
@@ -389,7 +379,7 @@ function populateModuleFilter(assignments) {
     }
 }
 
-// Render stat cards for assignments
+// Render summary stats.
 
 function renderStats(assignments) {
     let completed = 0, overdue = 0, dueToday = 0, thisWeek = 0;
@@ -404,13 +394,13 @@ function renderStats(assignments) {
         else if (a.status === "Overdue") overdue++;
         if (dueDate && dueDate.toDateString() === today.toDateString()) dueToday++;
 
-        // Check if due this week (today through coming Sunday)
+        // Count items due this week.
 
         if (dueDate) {
             const weekStart = new Date(today);
             weekStart.setHours(0,0,0,0);
             const weekEnd = new Date(today);
-            weekEnd.setDate(today.getDate() + (7 - today.getDay() - 1)); // End of current week (Sunday)
+            weekEnd.setDate(today.getDate() + (7 - today.getDay() - 1)); // Sunday
             weekEnd.setHours(23,59,59,999);
             if (dueDate >= weekStart && dueDate <= weekEnd) thisWeek++;
         }
@@ -454,18 +444,16 @@ function renderStats(assignments) {
     `;
 }
 
-// Render the assignments table
-
-// This function displays all assignments in the table, with status badges and action buttons
+// Render assignments table with status and actions.
 
 function renderAssignments(assignments) {
 
-    // Get the table body element where assignment rows will be added.
+    // Target table body.
 
     const table = document.getElementById('assignmentTable');
     table.innerHTML = '';
 
-    // Helper to map status to CSS class
+    // Map status value to CSS class.
 
     function getStatusClass(status) {
         switch (status) {
@@ -547,7 +535,7 @@ function renderAssignments(assignments) {
         };
     }
 
-    // Loop through assignments and add rows
+    // Build each row.
 
     assignments.forEach((a, idx) => {
         let dateValue = '';
@@ -558,7 +546,7 @@ function renderAssignments(assignments) {
         const remainingMeta = getRemainingDaysMeta(parsedDate, a.status);
         const statusClass = getStatusClass(a.status);
 
-        // Map status to background color
+        // Pick date input tint by status.
 
         let dateBg = '';
         switch (a.status) {
@@ -568,7 +556,7 @@ function renderAssignments(assignments) {
             case 'Active': dateBg = '#0385b822'; break; // blue tint
             default: dateBg = '#f8f9fa'; // fallback
         }
-                // Add sparkling gold stars SVG for completed status, with animated stars outside
+                // Decorative stars for completed items.
 
                 const completedStars = a.status === 'Completed' ? `
                     <span class="star-sparkle" style="margin-left:6px;vertical-align:middle;">
@@ -627,21 +615,21 @@ function renderAssignments(assignments) {
     });
 }
 
-// Edit assignment: opens the add-Assignment page with the assignment's index for editing
+// Open add-assignment page in edit mode.
 
 function editAssignment(idx) {
     window.location.href = `add-Assignment.html?edit=${idx}`;
 }
 
-// Change the due date for an assignment
+// Change due date from table date picker.
 
 function changeDueDate(idx, newDate) {
 
-    // Get all assignments
+    // Read assignments.
 
     let assignments = getAssignments();
 
-    // Format date for display
+    // Convert date for display format.
 
     const dateObj = parseDueDate(newDate);
     if (!dateObj) {
@@ -651,41 +639,41 @@ function changeDueDate(idx, newDate) {
     const displayDate = toDisplayDueDate(dateObj);
     assignments[idx].due = displayDate;
     saveAssignments(assignments);
-    assignments = getAssignments(); // re-process the statuses
+    assignments = getAssignments(); // refresh status rules
     populateModuleFilter(assignments);
     renderStats(assignments);
     renderAssignments(assignments);
     showNotification('Assignment due date updated!', { icon: 'check' });
 }
 
-// Update the status for an assignment when changed from the dropdown
+// Update status from the dropdown.
 
 function updateStatus(idx, status) {
 
-    // Get all assignments and update the status of the specified assignment, then re-render the table and stats.
+    // Update one status, then rerender.
 
     let assignments = getAssignments();
     assignments[idx].status = status;
     saveAssignments(assignments);
-    assignments = getAssignments(); // re-process statuses
+    assignments = getAssignments(); // refresh status rules
     populateModuleFilter(assignments);
     renderStats(assignments);
     renderAssignments(assignments);
     showNotification('Assignment status updated!', { icon: 'check' });
 }
 
-// Filter assignments based on search, module, and status filters
+// Apply search and selected filters.
 
 function filterAssignments() {
 
-    // Get filter values and filter the assignments accordingly, then re-render the table with the filtered results.
+    // Read current filter values.
 
     const search = document.getElementById('searchInput').value.toLowerCase();
     const module = document.getElementById('moduleFilter').value;
     const status = document.getElementById('statusFilter').value;
     let assignments = getAssignments();
 
-    // Filter assignments based on user input in the search box and selected module/status filters. This allows users to quickly find specific assignments or narrow down the list to what they need to focus on.
+    // Keep rows matching search, module, and status.
 
     assignments = assignments.filter(a => {
         const matchesSearch = a.name.toLowerCase().includes(search);
@@ -709,14 +697,14 @@ document.getElementById('moduleFilter').addEventListener('change', filterAssignm
 document.getElementById('statusFilter').addEventListener('change', filterAssignments);
 document.getElementById('resetFiltersBtn').addEventListener('click', resetFilters);
 
-// Initial render: load assignments and display stats and table on page load.
+// First page render.
 
 const assignments = getAssignments();
 populateModuleFilter(assignments);
 renderStats(assignments);
 renderAssignments(assignments);
 
-// Show save/update notification if redirected from add-Assignment.html after saving or updating an assignment.
+// Show save/update toast after redirect.
 
 const assignmentStatus = sessionStorage.getItem('assignmentStatus');
 if (assignmentStatus === 'saved') {
@@ -727,9 +715,7 @@ if (assignmentStatus === 'saved') {
     sessionStorage.removeItem('assignmentStatus');
 }
 
-// Delete assignment logic
-
-// Handles row selection and deleting an assignment from the list when the delete button is clicked. It confirms the deletion with the user, updates localStorage, and re-renders the table and stats.
+// Delete selected assignment after confirmation.
 
 let selectedAssignmentIdx = null;
 const assignmentTable = document.getElementById('assignmentTable');
@@ -758,7 +744,7 @@ if (deleteBtn) {
             if (confirm('Are you sure you want to delete this assignment?')) {
                 assignments.splice(selectedAssignmentIdx, 1);
                 saveAssignments(assignments);
-                assignments = getAssignments(); // re-process the statuses
+                assignments = getAssignments(); // refresh status rules
                 populateModuleFilter(assignments);
                 renderStats(assignments);
                 renderAssignments(assignments);

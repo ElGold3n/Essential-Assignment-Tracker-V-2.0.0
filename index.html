@@ -8,15 +8,15 @@
 </head>
 
 <body>
-<!-- Loader Overlay -->
+<!-- Loading spinner shown during page transition -->
 <div id="loaderOverlay">
   <div class="spinner"></div>
 </div>
 
-<!-- Overlay Reveal -->
+<!-- Visual reveal layer -->
 <div id="revealOverlay"></div>
 
-<!-- Floating icons -->
+<!-- Decorative floating icons -->
 <div class="floating-items">
   <div class="floating-item left" style="top:10%; animation: floatDown 12s linear infinite;">📚</div>
   <div class="floating-item left" style="top:40%; animation: floatUp 14s linear infinite;">✏️</div>
@@ -27,7 +27,7 @@
   <div class="floating-item right" style="top:75%; animation: floatUp 15s linear infinite;">📌</div>
 </div>
 
-<!-- Setup -->
+<!-- First-time name setup -->
 <div class="container hidden" id="setupScreen">
   <h3>Hey there!</h3>
   <h4> What should we call you?</h4>
@@ -37,7 +37,7 @@
   </div>
 </div>
 
-<!-- Welcome -->
+<!-- Main welcome screen -->
 <div class="container hidden" id="welcomeScreen">
   <div class="app-title">Welcome to Essential Assignment Tracker</div>
   <div class="time" id="time"></div>
@@ -49,11 +49,11 @@
   </div>
 </div>
 
-<!-- Sound -->
+<!-- Entry sound -->
 <audio id="enterSound" src="ui-tap.wav" preload="auto"></audio>
 
 <script>
-// Name logic
+// Save name and show personalized welcome.
 const savedName = localStorage.getItem("username");
 if(savedName) showWelcome(savedName);
 else document.getElementById("setupScreen").classList.remove("hidden");
@@ -89,7 +89,7 @@ function showWelcome(name){
   updateTime();
 }
 
-// Premium Enter
+// Enter button transition logic.
 document.getElementById("enterBtn").addEventListener("click", ()=>{
     const sound = document.getElementById("enterSound");
     const loader = document.getElementById("loaderOverlay");
@@ -103,7 +103,7 @@ document.getElementById("enterBtn").addEventListener("click", ()=>{
     },1020);
   };
 
-  // Prevent accidental double-clicks from creating multiple navigations.
+  // Prevent double-click from triggering multiple redirects.
   enterBtn.disabled = true;
 
     let playPromise = null;
@@ -114,10 +114,10 @@ document.getElementById("enterBtn").addEventListener("click", ()=>{
 
     if (navigator.vibrate) navigator.vibrate(30);
 
-    // 🔑 Tell next page we're transitioning
+    // Tell dashboard to show transition loader.
     localStorage.setItem("loadingTransition", "true");
 
-    // Show loader
+    // Show loader immediately.
     loader.classList.add("active");
 
     let hasNavigated = false;
@@ -127,21 +127,21 @@ document.getElementById("enterBtn").addEventListener("click", ()=>{
       goToDashboard();
     };
 
-    // Primary behavior: transition only after the sound finishes.
+    // Navigate after sound ends.
     if (soundEnabled) {
       sound.onended = safeNavigate;
     } else {
       setTimeout(safeNavigate, 120);
     }
 
-    // If audio fails to play, still continue.
+    // Continue even if sound fails.
     if (playPromise && typeof playPromise.catch === "function") {
       playPromise.catch(()=> {
         safeNavigate();
       });
     }
 
-    // Long-stop fallback in case 'ended' never fires.
+    // Fallback: continue after timeout.
     setTimeout(()=>{
       safeNavigate();
     },12000);

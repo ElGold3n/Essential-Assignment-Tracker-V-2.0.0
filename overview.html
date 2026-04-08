@@ -11,7 +11,7 @@
     <script src="js/shared-nav.js" defer></script>
     <script src="js/time-display.js" defer></script>
 
-    <!-- All main styles can be found in css/overview.css -->
+    <!-- Main styling is in css/overview.css -->
 </head>
 <body>
   <div class="container">
@@ -29,9 +29,7 @@
     </div>
     <div class="container">
 
-    <!-- Dashboard Overview Cards
-
-         Shows semester progress, upcoming assignments, overdue count, and today's workload -->
+    <!-- Overview cards for progress, week, overdue, and today -->
     
     <div class="dashboard">
       <div class="card">
@@ -41,7 +39,7 @@
           <div style="width:90%;height:14px;background:#e2e8f0;border-radius:7px;overflow:hidden;">
             <div id="progressBar" style="height:100%;width:0%;background:#4caf50;border-radius:7px;transition:width 0.5s;position:relative;overflow:hidden;"></div>
             <div id="progressGloss" style="position:absolute;top:0;left:0;height:100%;width:100%;pointer-events:none;z-index:2;"></div>
-                // Add gloss overlay animation
+                // Animate a gloss effect on the progress bar.
                 const gloss = document.getElementById('progressGloss');
                 gloss.style.background = 'linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.45) 40%, rgba(255,255,255,0.18) 80%)';
                 gloss.style.backgroundSize = '200% 100%';
@@ -79,10 +77,10 @@
       </div>
     </div>
 
-    <!--Visual Timetable (Weekly Calendar) -->
+    <!-- Weekly timetable -->
 
 
-    <!--Displays assignments for each weekday in a calendar format -->
+    <!-- Shows assignments by weekday -->
 
     <div class="timetable">
       <table>
@@ -103,9 +101,7 @@
       </table>
     </div>
 
-    <!--Assignment List with Color-Coding, Priority Flags & Progress -->
-
-    <!--Each assignment card shows name, status, due date, and module -->
+    <!-- Assignment cards with status and due-date details -->
 
     <div class="assignments">
       <div id="assignmentCards"></div>
@@ -140,7 +136,7 @@
           return `${yyyy}-${mm}-${dd}`;
         }
 
-        //Render today's workload card //
+        // Render today's workload card.
 
         function renderTodayWorkload(assignments) {
           const today = new Date();
@@ -151,11 +147,7 @@
           const todaysAssignments = assignments.filter(a => {
             if (a.status === 'Completed') return false;
 
-            // converts the assignment's due date into a format that JavaScript can understand.
-
-            // This is important as dates can be written in different ways (such as 25/02/2026 or 2026-02-25),
-            
-            // and i need to make sure i can compare them correctly to today's date.
+            // Convert due date to a comparable local date.
             
             const dueDate = parseDueDate(a.due);
             if (!dueDate) return false;
@@ -176,20 +168,13 @@
             document.getElementById('todayWorkload').innerHTML = text;
         }
         
-    // Load assignments from localStorage
-
-    // This function gets the list of assignments saved in your browser's local storage.
-
-    // It lets your assignments stay saved even after you close or refresh the page.
+    // Load assignments from localStorage.
 
     function getAssignments() {
       const data = localStorage.getItem('assignments');
       let arr = data ? JSON.parse(data) : [];
 
-      // Check each assignment's due date.
-      
-      // If the due date is before today and the assignment is not completed,
-      // mark its status as 'Overdue' so it can be highlighted in the app.
+      // Auto-update status from due dates.
       
       const today = new Date();
       today.setHours(0,0,0,0);
@@ -213,7 +198,7 @@
       return arr;
     }
 
-    // Map modules to colors for card borders and timetable blocks
+    // Map module names to color themes.
 
     function getBlockColor(module) {
       if (module.includes('Web Technologies Part 1') || module.includes('SET08801')) return 'var(--Web Technologies Part 1)';
@@ -243,27 +228,19 @@
       return 'med';
     }
 
-    // Get weekday index (0=Monday, 4=Friday)
+    // Convert due date into weekday index.
 
     function getWeekdayIndex(dateStr) {
 
-      // This function can handle dates in two formats:
-
-      // - YYYY-MM-DD (like 2024-03-15)
-      // - DD/MM/YYYY (like 15/03/2024)
-
-      // It converts both to a JavaScript Date object so the weekday can be found.
       const d = parseDueDate(dateStr);
       if (!d || isNaN(d)) return -1;
-      let day = d.getDay(); // 0=Sunday, 1=Monday, ...
-      if (day === 0) day = 6; // Sunday → 6
-      else day -= 1; // Monday → 0
+      let day = d.getDay(); // 0=Sunday, 1=Monday
+      if (day === 0) day = 6; // Sunday to index 6
+      else day -= 1; // Monday to index 0
       return day;
     }
 
-    // This function fills the timetable with assignment blocks for each weekday.
-    
-    // It helps you see which assignments are due on which days at a glance.
+    // Fill timetable cells with assignment blocks.
 
     function renderTimetable(assignments) {
       const cells = [
@@ -274,20 +251,16 @@
         document.getElementById('fridayCell')
       ];
       
-      // Clear all timetable cells before adding new assignments.
-
-      // This ensures the timetable is empty so we don't show old data from previous renders.
+      // Clear old timetable content before drawing new items.
       
       cells.forEach(cell => cell.innerHTML = '');
 
-      // For each assignment, figure out which weekday it is due (Monday to Friday)
-      
-      // and add it to the correct cell in the timetable. This helps visualize your week.
+      // Put each assignment into the correct weekday cell.
 
       assignments.forEach(a => {
         const idx = getWeekdayIndex(a.due);
         if (idx >= 0 && idx <= 4) {
-          // Determine status color (match dashboard.html logic)
+          // Pick block color based on status.
           let statusColor = '';
           if (a.status === 'Completed') statusColor = '#b2f2a5';
           else if (a.status === 'Overdue') statusColor = '#e74c3c';
@@ -301,11 +274,7 @@
       });
     }
 
-    // This function displays all assignments as cards on the page.
-
-    // Each card shows the assignment's name, status, due date, and module.
-
-    // If there are no assignments, it shows a message instead.
+    // Render assignment cards under the timetable.
     
     function renderAssignmentCards(assignments) {
       const container = document.getElementById('assignmentCards');
@@ -396,26 +365,20 @@
       });
     }
 
-    // When the page loads, this code displays the weekly timetable and assignment cards.
-    // It shows all your assignments visually, so you can see your schedule and tasks right away without clicking anything.
-    // This helps students quickly understand their workload and deadlines as soon as they open the overview page.
+    // Initial render for timetable and cards.
 
     const assignments = getAssignments();
     renderTimetable(assignments);
     renderAssignmentCards(assignments);
 
-    // Calculate and display the number of overdue assignments.
-    
-    // This helps students quickly see how many tasks are past their due date.
+    // Show overdue count.
 
     const overdue = assignments.filter(a => a.status === 'Overdue').length;
     document.getElementById('overdueCount').textContent = overdue;
 
-    // Semester progress calculation
+    // Semester progress calculations.
 
-        // function: Calculates the start (Monday) and end (Sunday) dates for the current week.
-
-        // This is useful for showing which assignments are due this week.
+        // Get current week range (Monday to Sunday).
         
         function getWeekRange() {
           const now = new Date();
@@ -429,9 +392,7 @@
           return {start: monday, end: sunday};
         }
 
-        // This function updates the dashboard card that shows how many assignments are due this week.
-        
-        // It helps students quickly see their workload for the current week, so they can plan ahead and avoid missing deadlines.
+        // Update "due this week" card.
 
         function renderUpcomingWeek(assignments) {
           const {start, end} = getWeekRange();
@@ -450,7 +411,7 @@
       const completed = assignments.filter(a => a.status === 'Completed').length;
       const percent = total ? Math.round((completed / total) * 100) : 0;
 
-      // Animate progress bar fill
+      // Animate progress bar fill.
       const progressBar = document.getElementById('progressBar');
       const progressPercent = document.getElementById('progressPercent');
       const progressText = document.getElementById('progressText');
@@ -458,9 +419,9 @@
       progressBar.style.width = '0%';
       progressPercent.textContent = '0%';
       progressText.textContent = `${completed} of ${total} assignments completed`;
-      const step = percent / 120; // 120 frames for even smoother animation
+      const step = percent / 120; // smooth animation step
       function lerpColor(a, b, t) {
-        // Linear interpolation between two hex colors
+        // Blend two colors based on percentage.
         a = a.replace('#',''); b = b.replace('#','');
         const ar = parseInt(a.substring(0,2),16), ag = parseInt(a.substring(2,4),16), ab = parseInt(a.substring(4,6),16);
         const br = parseInt(b.substring(0,2),16), bg = parseInt(b.substring(2,4),16), bb = parseInt(b.substring(4,6),16);
@@ -472,7 +433,7 @@
           current = Math.min(current + step, percent);
           progressBar.style.width = current + '%';
           progressPercent.textContent = Math.round(current) + '%';
-          // Color transition: orange (#fd7e14) to green (#4caf50)
+          // Transition from orange to green.
           const t = current / 100;
           progressBar.style.background = lerpColor('#fd7e14', '#4caf50', t);
           requestAnimationFrame(animateFill);

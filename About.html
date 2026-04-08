@@ -1,14 +1,5 @@
 <!DOCTYPE html>
-<!--
-
-  - This page is a plain HTML file. You can open it directly in your browser to see the page.
-
-  - CSS can be found inside the <style> block — change colors, spacing, and fonts there.
-
-  - The small gear button (⚙️) in the header is programmed to a JavaScript file at ../js/backup-button.js
-
-    which provides Export/Import (backup/restore).
--->
+<!-- About page for app info and credits. -->
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -23,15 +14,7 @@
 </head>
 <body>
 
-<!--
-    This is the top header area of the page.
-
-    It includes the back button, navigation links (Home, Add Assignment, Overview, About), and the sun/moon button for toggling dark mode.
-    
-    The gear button (⚙️) lets users access backup and restore options for their assignment data.
-
-    This section helps users quickly move between different parts of the app and change the theme.
--->
+<!-- Header with title, theme toggle, clock, and nav menu. -->
 
 <div class="header">
     <div style="display: flex; align-items: center; width: 100%; justify-content: space-between;">
@@ -134,7 +117,7 @@
         }
         </style>
         <script>
-        // Smoke effect for Back to Home button
+        // Adds a hover smoke effect to the Back to Home button.
         (function() {
             const btn = document.getElementById('backHomeBtn');
             if (!btn) return;
@@ -150,12 +133,12 @@
                 smoke.style.display = 'block';
                 smoke.style.opacity = '0.45';
                 const btnRect = btn.getBoundingClientRect();
-                // Position relative to button
+                // Place smoke relative to the button area.
                 smoke.style.left = (x - btnRect.left - 35) + 'px';
                 smoke.style.top = (y - btnRect.top - 35) + 'px';
                 if (fadeTimeout) clearTimeout(fadeTimeout);
                 if (stopTimeout) clearTimeout(stopTimeout);
-                // If mouse stops for 120ms, fade out
+                // Fade smoke when mouse stops moving.
                 stopTimeout = setTimeout(() => {
                     smoke.style.opacity = '0';
                     fadeTimeout = setTimeout(() => { if (smoke) smoke.style.display = 'none'; }, 500);
@@ -185,6 +168,6 @@
 </div>
 
 </body>
-<!-- backup controls are now handled by js/shared-nav.js -->
+<!-- Backup controls are handled by shared-nav.js -->
 <script src="js/export-button.js"></script>
 </html>
