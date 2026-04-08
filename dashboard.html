@@ -295,6 +295,36 @@ window.addEventListener("load", () => {
 });
 // Get all assignments from localStorage, marking overdue ones
 
+function parseDueDate(value) {
+    if (!value) return null;
+
+    const raw = String(value).trim();
+    let parts = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (parts) {
+        return new Date(Number(parts[1]), Number(parts[2]) - 1, Number(parts[3]));
+    }
+
+    parts = raw.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if (parts) {
+        return new Date(Number(parts[3]), Number(parts[2]) - 1, Number(parts[1]));
+    }
+
+    const parsed = new Date(raw);
+    if (isNaN(parsed)) return null;
+    return new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
+}
+
+function toLocalIsoDate(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+}
+
+function toDisplayDueDate(date) {
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
 function getAssignments() {
 
     // Try to load assignments from localStorage
@@ -306,21 +336,23 @@ function getAssignments() {
 
     const today = new Date();
     today.setHours(0,0,0,0);
+    const DUE_SOON_DAYS = 3;
     arr = arr.map(a => {
-        let dueDate;
+        const dueDate = parseDueDate(a.due);
         if (a.status !== 'Completed' && a.due) {
-            dueDate = new Date(a.due);
-            if (isNaN(dueDate)) {
-                dueDate = new Date(Date.parse(a.due));
+            if (dueDate) dueDate.setHours(0,0,0,0);
+            if (!dueDate) return a;
+
+            const daysLeft = Math.round((dueDate - today) / 86400000);
+            if (daysLeft < 0) {
+                a.status = 'Overdue';
+            } else if (daysLeft <= DUE_SOON_DAYS) {
+                a.status = 'Due soon';
+            } else if (a.status === 'Overdue' || a.status === 'Due soon') {
+                a.status = 'Active';
             }
-            dueDate.setHours(0,0,0,0);
-            if (dueDate < today) a.status = 'Overdue';
         } else if (a.due) {
-            dueDate = new Date(a.due);
-            if (isNaN(dueDate)) {
-                dueDate = new Date(Date.parse(a.due));
-            }
-            dueDate.setHours(0,0,0,0);
+            if (dueDate) dueDate.setHours(0,0,0,0);
         }
         return a;
     });
@@ -364,12 +396,8 @@ function renderStats(assignments) {
     const today = new Date();
     today.setHours(0,0,0,0);
     assignments.forEach(a => {
-        let dueDate;
-        if (a.due) {
-            dueDate = new Date(a.due);
-            if (isNaN(dueDate)) {
-                dueDate = new Date(Date.parse(a.due));
-            }
+        const dueDate = parseDueDate(a.due);
+        if (dueDate) {
             dueDate.setHours(0,0,0,0);
         }
         if (a.status === "Completed") completed++;
@@ -466,14 +494,68 @@ function renderAssignments(assignments) {
 
         return `<div class="notes-inline"><strong>Note:</strong><div class="notes-inline-first">${escapeHtml(noteText)}</div></div>`;
     }
+
+    function getRemainingDaysMeta(dueDate, status) {
+        if (!dueDate) return { text: 'No due date', color: '#6c757d' };
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const normalizedDue = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate());
+        const daysLeft = Math.round((normalizedDue - today) / 86400000);
+
+        if (status === 'Completed') {
+            if (daysLeft < 0) {
+                const pastDays = Math.abs(daysLeft);
+                return {
+                    text: pastDays === 1 ? 'Completed 1 day ago' : `Completed ${pastDays} days ago`,
+                    color: '#28a745'
+                };
+            }
+
+            if (daysLeft === 0) {
+                return { text: 'Completed today', color: '#28a745' };
+            }
+
+            return {
+                text: daysLeft === 1 ? 'Completed 1 day early' : `Completed ${daysLeft} days early`,
+                color: '#28a745'
+            };
+        }
+
+        if (daysLeft < 0) {
+            const overdueDays = Math.abs(daysLeft);
+            return {
+                text: overdueDays === 1 ? '1 day overdue' : `${overdueDays} days overdue`,
+                color: '#dc3545'
+            };
+        }
+
+        if (daysLeft === 0) {
+            return { text: 'Due today', color: '#fd7e14' };
+        }
+
+        if (daysLeft <= 3) {
+            return {
+                text: daysLeft === 1 ? '1 day left' : `${daysLeft} days left`,
+                color: '#fd7e14'
+            };
+        }
+
+        return {
+            text: daysLeft === 1 ? '1 day left' : `${daysLeft} days left`,
+            color: '#0385b8'
+        };
+    }
+
     // Loop through assignments and add rows
 
     assignments.forEach((a, idx) => {
         let dateValue = '';
-        const parsedDate = new Date(a.due);
-        if (!isNaN(parsedDate)) {
-            dateValue = parsedDate.toISOString().split('T')[0];
+        const parsedDate = parseDueDate(a.due);
+        if (parsedDate) {
+            dateValue = toLocalIsoDate(parsedDate);
         }
+        const remainingMeta = getRemainingDaysMeta(parsedDate, a.status);
         const statusClass = getStatusClass(a.status);
 
         // Map status to background color
@@ -528,6 +610,7 @@ function renderAssignments(assignments) {
                 <td>${a.module}</td>
                 <td>
                     <span>${a.due}</span><br>
+                    <small style="display:block;margin-top:2px;color:${remainingMeta.color};font-weight:600;">${remainingMeta.text}</small>
                     <input type="date" value="${dateValue}" onchange="changeDueDate(${idx}, this.value);event.stopPropagation();" style="margin-top:4px; background:${dateBg}; border-radius:6px;" />
                 </td>
                 <td><span class="status ${statusClass}">${a.status}${completedStars}</span></td>
@@ -560,8 +643,12 @@ function changeDueDate(idx, newDate) {
 
     // Format date for display
 
-    const dateObj = new Date(newDate);
-    const displayDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const dateObj = parseDueDate(newDate);
+    if (!dateObj) {
+        showNotification('Invalid date selected.', { duration: 2200 });
+        return;
+    }
+    const displayDate = toDisplayDueDate(dateObj);
     assignments[idx].due = displayDate;
     saveAssignments(assignments);
     assignments = getAssignments(); // re-process the statuses

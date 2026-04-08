@@ -114,6 +114,32 @@
 
   <script>
 
+        function parseDueDate(value) {
+          if (!value) return null;
+
+          const raw = String(value).trim();
+          let parts = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+          if (parts) {
+            return new Date(Number(parts[1]), Number(parts[2]) - 1, Number(parts[3]));
+          }
+
+          parts = raw.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+          if (parts) {
+            return new Date(Number(parts[3]), Number(parts[2]) - 1, Number(parts[1]));
+          }
+
+          const parsed = new Date(raw);
+          if (isNaN(parsed)) return null;
+          return new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
+        }
+
+        function toLocalIsoDate(date) {
+          const yyyy = date.getFullYear();
+          const mm = String(date.getMonth() + 1).padStart(2, '0');
+          const dd = String(date.getDate()).padStart(2, '0');
+          return `${yyyy}-${mm}-${dd}`;
+        }
+
         //Render today's workload card //
 
         function renderTodayWorkload(assignments) {
@@ -122,7 +148,6 @@
           const mm = String(today.getMonth() + 1).padStart(2, '0');
           const dd = String(today.getDate()).padStart(2, '0');
           const todayStr = `${yyyy}-${mm}-${dd}`;
-          const todayAlt = `${dd}/${mm}/${yyyy}`;
           const todaysAssignments = assignments.filter(a => {
             if (a.status === 'Completed') return false;
 
@@ -132,36 +157,9 @@
             
             // and i need to make sure i can compare them correctly to today's date.
             
-            let adate = a.due;
-            if (!adate) return false;
-
-            // Changes the date format to YYYY-MM-DD (for example, 2026-02-25).
-
-            // This format is the standard way JavaScript understands dates,
-
-            // so dates convert like 25/02/2026 to 2026-02-25 to make sure
-
-            // our code can compare dates correctly.
-            
-            let parsed = '';
-            if (/^\d{4}-\d{2}-\d{2}$/.test(adate)) {
-              parsed = adate;
-            } else if (/^\d{2}\/\d{2}\/\d{4}$/.test(adate)) {
-
-              // If the date is in DD/MM/YYYY format (like 25/02/2026),
-
-              // rearrange it to YYYY-MM-DD (like 2026-02-25) so JavaScript can understand it.
-
-              const [d, m, y] = adate.split('/');
-              parsed = `${y}-${m}-${d}`;
-            } else {
-              // If the date format is not recognized above, try to let JavaScript parse it automatically.
-
-              const d = new Date(adate);
-              if (!isNaN(d)) {
-                parsed = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-              }
-            }
+            const dueDate = parseDueDate(a.due);
+            if (!dueDate) return false;
+            const parsed = toLocalIsoDate(dueDate);
             return parsed === todayStr;
           });
           const count = todaysAssignments.length;
@@ -195,19 +193,20 @@
       
       const today = new Date();
       today.setHours(0,0,0,0);
+      const DUE_SOON_DAYS = 3;
       arr = arr.map(a => {
         if (a.status !== 'Completed' && a.due) {
-          let dueDate;
-          if (/^\d{4}-\d{2}-\d{2}$/.test(a.due)) {
-            dueDate = new Date(a.due);
-          } else if (/^\d{2}\/\d{2}\/\d{4}$/.test(a.due)) {
-            const [dd, mm, yyyy] = a.due.split('/');
-            dueDate = new Date(`${yyyy}-${mm}-${dd}`);
-          } else {
-            dueDate = new Date(a.due);
-          }
+          const dueDate = parseDueDate(a.due);
+          if (!dueDate) return a;
           dueDate.setHours(0,0,0,0);
-          if (dueDate < today) a.status = 'Overdue';
+          const daysLeft = Math.round((dueDate - today) / 86400000);
+          if (daysLeft < 0) {
+            a.status = 'Overdue';
+          } else if (daysLeft <= DUE_SOON_DAYS) {
+            a.status = 'Due soon';
+          } else if (a.status === 'Overdue' || a.status === 'Due soon') {
+            a.status = 'Active';
+          }
         }
         return a;
       });
@@ -254,19 +253,8 @@
       // - DD/MM/YYYY (like 15/03/2024)
 
       // It converts both to a JavaScript Date object so the weekday can be found.
-      let d;
-      if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
-        d = new Date(dateStr);
-      } else if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr)) {
-
-        // Convert DD/MM/YYYY to YYYY-MM-DD
-
-        const [dd, mm, yyyy] = dateStr.split('/');
-        d = new Date(`${yyyy}-${mm}-${dd}`);
-      } else {
-        d = new Date(dateStr);
-      }
-      if (isNaN(d)) return -1;
+      const d = parseDueDate(dateStr);
+      if (!d || isNaN(d)) return -1;
       let day = d.getDay(); // 0=Sunday, 1=Monday, ...
       if (day === 0) day = 6; // Sunday → 6
       else day -= 1; // Monday → 0
@@ -343,14 +331,64 @@
         return `<div class="notes-inline"><strong>Note:</strong><div class="notes-inline-first">${escapeHtml(noteText)}</div></div>`;
       }
 
+      function getRemainingDaysMeta(dueDate, status) {
+        if (!dueDate) return { text: 'No due date', color: '#6b7280' };
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const normalizedDue = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate());
+        const daysLeft = Math.round((normalizedDue - today) / 86400000);
+
+        if (status === 'Completed') {
+          if (daysLeft < 0) {
+            const pastDays = Math.abs(daysLeft);
+            return {
+              text: pastDays === 1 ? 'Completed 1 day ago' : `Completed ${pastDays} days ago`,
+              color: '#22c55e'
+            };
+          }
+
+          if (daysLeft === 0) return { text: 'Completed today', color: '#22c55e' };
+
+          return {
+            text: daysLeft === 1 ? 'Completed 1 day early' : `Completed ${daysLeft} days early`,
+            color: '#22c55e'
+          };
+        }
+
+        if (daysLeft < 0) {
+          const overdueDays = Math.abs(daysLeft);
+          return {
+            text: overdueDays === 1 ? '1 day overdue' : `${overdueDays} days overdue`,
+            color: '#e74c3c'
+          };
+        }
+
+        if (daysLeft === 0) return { text: 'Due today', color: '#f59e0b' };
+        if (daysLeft <= 3) {
+          return {
+            text: daysLeft === 1 ? '1 day left' : `${daysLeft} days left`,
+            color: '#f59e0b'
+          };
+        }
+
+        return {
+          text: daysLeft === 1 ? '1 day left' : `${daysLeft} days left`,
+          color: '#2563eb'
+        };
+      }
+
       assignments.forEach(a => {
         const cardClass = getCardClass(a.module);
         const priorityClass = getPriority(a.status);
+        const dueDate = parseDueDate(a.due);
+        const remainingMeta = getRemainingDaysMeta(dueDate, a.status);
         container.innerHTML += `
           <div class="assignment-card ${cardClass} ${priorityClass}">
             <strong>${a.name}</strong>
             <span class="priority ${priorityClass}">${a.status}</span>
             <div>Due: ${a.due}</div>
+            <div style="margin-top:2px;font-weight:600;color:${remainingMeta.color};">${remainingMeta.text}</div>
             <small>Module: ${a.module}</small>
             ${a.notes ? formatNotesHtml(a.notes) : ''}
           </div>
@@ -398,7 +436,8 @@
         function renderUpcomingWeek(assignments) {
           const {start, end} = getWeekRange();
           const weekAssignments = assignments.filter(a => {
-            const due = new Date(a.due);
+            const due = parseDueDate(a.due);
+            if (!due) return false;
             return due >= start && due <= end && a.status !== 'Completed';
           });
           const count = weekAssignments.length;

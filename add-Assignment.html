@@ -140,13 +140,43 @@
                 let d = new Date(assignments[parseInt(editIdx)].due);
                 if (!isNaN(d)) initialDate = d;
             }
+            function toLocalIsoDate(date) {
+                const y = date.getFullYear();
+                const m = String(date.getMonth() + 1).padStart(2, '0');
+                const d = String(date.getDate()).padStart(2, '0');
+                return `${y}-${m}-${d}`;
+            }
             // Set hidden input value
             function setDueDate(date) {
-                document.getElementById('dueDateInput').value = date.toISOString().split('T')[0];
+                document.getElementById('dueDateInput').value = toLocalIsoDate(date);
+            }
+            function formatDisplayDue(date) {
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
             }
             setDueDate(initialDate);
             renderCalendar(assignments, initialDate, function(date) {
                 setDueDate(date);
+            }, 'month', function(date, dayAssignments) {
+                if (Array.isArray(dayAssignments) && dayAssignments.length > 0) {
+                    const firstMatch = dayAssignments[0];
+                    if (firstMatch && typeof firstMatch.index === 'number') {
+                        window.location.href = `add-Assignment.html?edit=${firstMatch.index}`;
+                        return;
+                    }
+                }
+
+                if (editIdx === null) return;
+
+                const assignmentIndex = parseInt(editIdx, 10);
+                if (!assignments[assignmentIndex]) return;
+
+                assignments[assignmentIndex].due = formatDisplayDue(date);
+                localStorage.setItem('assignments', JSON.stringify(assignments));
+                setDueDate(date);
+
+                if (typeof window.showNotification === 'function') {
+                    window.showNotification('Due date updated. Click Update Assignment to save other edits.', { icon: 'check', duration: 2600 });
+                }
             });
     });
     </script>
@@ -211,6 +241,13 @@ function getQueryParam(param) {
     return urlParams.has(param) ? urlParams.get(param) : null;
 }
 
+function toLocalIsoDate(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+}
+
 const editIdx = getQueryParam('edit');
 if (editIdx !== null) {
 
@@ -229,7 +266,7 @@ if (editIdx !== null) {
 
         let dateObj = new Date(assignment.due);
         if (!isNaN(dateObj)) {
-            document.querySelector('input[name="due_date"]').value = dateObj.toISOString().split('T')[0];
+            document.querySelector('input[name="due_date"]').value = toLocalIsoDate(dateObj);
         }
         document.querySelector('select[name="status"]').value = assignment.status;
         document.querySelector('textarea[name="notes"]').value = assignment.notes || '';
@@ -266,7 +303,10 @@ document.getElementById('assignmentForm').addEventListener('submit', function(e)
 
     const name = form.Assignment_name.value.trim();
     const module = form.module.value.trim();
-    const due = new Date(form.due_date.value);
+    const dueParts = String(form.due_date.value || '').split('-');
+    const due = dueParts.length === 3
+        ? new Date(Number(dueParts[0]), Number(dueParts[1]) - 1, Number(dueParts[2]))
+        : new Date(form.due_date.value);
     const displayDue = due.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     const status = form.status.value;
     const notes = form.notes.value.trim();

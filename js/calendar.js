@@ -4,7 +4,7 @@
 
 
 // Enhanced calendar with tooltips, today highlight, multi-day, color coding, week/month toggle, mobile, accessibility
-function renderCalendar(assignments, selectedDate, onDateSelect, viewMode = 'month') {
+function renderCalendar(assignments, selectedDate, onDateSelect, viewMode = 'month', onDateDoubleClick) {
     const container = document.getElementById('calendarContainer');
     if (!container) return;
     container.innerHTML = '';
@@ -19,13 +19,13 @@ function renderCalendar(assignments, selectedDate, onDateSelect, viewMode = 'mon
 
     // Collect assignment info for this month (and week if needed)
     const dots = {};
-    assignments.forEach(a => {
+    assignments.forEach((a, index) => {
         if (!a.due) return;
         let d = new Date(a.due);
         if (!isNaN(d) && d.getFullYear() === year && d.getMonth() === month) {
             const day = d.getDate();
             if (!dots[day]) dots[day] = [];
-            dots[day].push(a);
+            dots[day].push({ assignment: a, index });
         }
         // Multi-day support: if a.start and a.end exist, mark all days in range
         if (a.start && a.end) {
@@ -35,7 +35,7 @@ function renderCalendar(assignments, selectedDate, onDateSelect, viewMode = 'mon
                     if (dt.getFullYear() === year && dt.getMonth() === month) {
                         const day = dt.getDate();
                         if (!dots[day]) dots[day] = [];
-                        dots[day].push(a);
+                        dots[day].push({ assignment: a, index });
                     }
                 }
             }
@@ -87,6 +87,7 @@ function renderCalendar(assignments, selectedDate, onDateSelect, viewMode = 'mon
     }
     for (let day = start; day <= end; day++) {
         const cell = document.createElement('div');
+        let clickTimer = null;
         cell.className = 'calendar-cell';
         cell.setAttribute('tabindex', '0');
         cell.setAttribute('role', 'button');
@@ -101,7 +102,8 @@ function renderCalendar(assignments, selectedDate, onDateSelect, viewMode = 'mon
         if (dots[day]) {
             // Color coding: status (overdue, due soon, completed, active)
             let status = 'active';
-            for (const a of dots[day]) {
+            for (const item of dots[day]) {
+                const a = item.assignment;
                 if (a.status === 'Overdue') status = 'overdue';
                 else if (a.status === 'Due soon' && status !== 'overdue') status = 'due';
                 else if (a.status === 'Completed' && status !== 'overdue' && status !== 'due') status = 'done';
@@ -110,20 +112,38 @@ function renderCalendar(assignments, selectedDate, onDateSelect, viewMode = 'mon
             dot.className = 'calendar-dot calendar-dot-' + status;
             dot.style.cursor = 'pointer';
             // Tooltip with assignment titles
-            const tooltip = dots[day].map(a => a.name || a.Assignment_name || a.title || 'Assignment').join(', ');
+            const tooltip = dots[day].map(item => {
+                const a = item.assignment;
+                return a.name || a.Assignment_name || a.title || 'Assignment';
+            }).join(', ');
             dot.title = tooltip;
             cell.appendChild(dot);
             // Also set tooltip on the cell for easier hover
             cell.title = tooltip;
         }
         cell.addEventListener('click', () => {
-            onDateSelect(new Date(year, month, day));
-            renderCalendar(assignments, new Date(year, month, day), onDateSelect, viewMode);
+            const chosenDate = new Date(year, month, day);
+            clickTimer = setTimeout(() => {
+                onDateSelect(chosenDate);
+                renderCalendar(assignments, chosenDate, onDateSelect, viewMode, onDateDoubleClick);
+            }, 220);
+        });
+        cell.addEventListener('dblclick', () => {
+            if (clickTimer) {
+                clearTimeout(clickTimer);
+                clickTimer = null;
+            }
+            const chosenDate = new Date(year, month, day);
+            if (typeof onDateDoubleClick === 'function') {
+                onDateDoubleClick(chosenDate, dots[day] || []);
+            }
+            onDateSelect(chosenDate);
+            renderCalendar(assignments, chosenDate, onDateSelect, viewMode, onDateDoubleClick);
         });
         cell.addEventListener('keydown', e => {
             if (e.key === 'Enter' || e.key === ' ') {
                 onDateSelect(new Date(year, month, day));
-                renderCalendar(assignments, new Date(year, month, day), onDateSelect, viewMode);
+                renderCalendar(assignments, new Date(year, month, day), onDateSelect, viewMode, onDateDoubleClick);
             }
         });
         grid.appendChild(cell);
@@ -133,14 +153,14 @@ function renderCalendar(assignments, selectedDate, onDateSelect, viewMode = 'mon
     // Navigation
     document.getElementById('prevMonth').onclick = () => {
         const prev = viewMode === 'month' ? new Date(year, month - 1, 1) : new Date(year, month, Math.max(1, selectedDate.getDate() - 7));
-        renderCalendar(assignments, prev, onDateSelect, viewMode);
+        renderCalendar(assignments, prev, onDateSelect, viewMode, onDateDoubleClick);
     };
     document.getElementById('nextMonth').onclick = () => {
         const next = viewMode === 'month' ? new Date(year, month + 1, 1) : new Date(year, month, Math.min(daysInMonth, selectedDate.getDate() + 7));
-        renderCalendar(assignments, next, onDateSelect, viewMode);
+        renderCalendar(assignments, next, onDateSelect, viewMode, onDateDoubleClick);
     };
     document.getElementById('toggleView').onclick = () => {
-        renderCalendar(assignments, selectedDate, onDateSelect, viewMode === 'month' ? 'week' : 'month');
+        renderCalendar(assignments, selectedDate, onDateSelect, viewMode === 'month' ? 'week' : 'month', onDateDoubleClick);
     };
 }
 
