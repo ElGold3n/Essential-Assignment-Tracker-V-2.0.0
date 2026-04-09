@@ -277,6 +277,8 @@
     if (darkModeToggle) {
       const themeToggleWrap = document.createElement('div');
       themeToggleWrap.className = 'theme-toggle-wrap';
+      themeToggleWrap.setAttribute('data-tooltip', 'Toggle dark mode');
+      darkModeToggle.title = 'Toggle dark mode';
       themeToggleWrap.appendChild(darkModeToggle);
       controls.appendChild(themeToggleWrap);
     }
