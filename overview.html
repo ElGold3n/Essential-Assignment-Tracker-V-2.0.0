@@ -382,6 +382,7 @@
       renderTodayWorkload(latestAssignments);
     }
 
+    window.refreshAppFromStorage = refreshOverviewFromStorage;
     window.addEventListener('assignments-updated', refreshOverviewFromStorage);
 
     // Show overdue count.

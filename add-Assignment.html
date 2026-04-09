@@ -203,6 +203,7 @@
             }
             setDueDate(initialDate);
             renderAssignmentCalendar();
+            window.refreshAppFromStorage = refreshAddAssignmentView;
             window.addEventListener('assignments-updated', refreshAddAssignmentView);
     });
     </script>

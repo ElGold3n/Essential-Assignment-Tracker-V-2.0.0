@@ -112,6 +112,9 @@
               const val = imported[k];
               localStorage.setItem(k, typeof val === 'string' ? val : JSON.stringify(val));
             });
+            if (typeof window.refreshAppFromStorage === 'function') {
+              window.refreshAppFromStorage({ source: 'backup-import', overwrite: true });
+            }
             window.dispatchEvent(new CustomEvent('assignments-updated', { detail: { source: 'backup-import', overwrite: true } }));
             alert('Import complete (existing keys overwritten).');
           } else {
@@ -123,6 +126,9 @@
                 added++;
               }
             });
+            if (typeof window.refreshAppFromStorage === 'function') {
+              window.refreshAppFromStorage({ source: 'backup-import', overwrite: false, added: added });
+            }
             window.dispatchEvent(new CustomEvent('assignments-updated', { detail: { source: 'backup-import', overwrite: false, added: added } }));
             alert('Import complete — ' + added + ' new keys added.');
           }
