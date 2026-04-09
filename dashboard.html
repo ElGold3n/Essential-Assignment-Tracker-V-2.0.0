@@ -704,6 +704,15 @@ populateModuleFilter(assignments);
 renderStats(assignments);
 renderAssignments(assignments);
 
+function refreshDashboardFromStorage() {
+    const latestAssignments = getAssignments();
+    populateModuleFilter(latestAssignments);
+    renderStats(latestAssignments);
+    renderAssignments(latestAssignments);
+}
+
+window.addEventListener('assignments-updated', refreshDashboardFromStorage);
+
 // Show save/update toast after redirect.
 
 const assignmentStatus = sessionStorage.getItem('assignmentStatus');

@@ -140,38 +140,70 @@
                 const d = String(date.getDate()).padStart(2, '0');
                 return `${y}-${m}-${d}`;
             }
+            function formatDisplayDue(date) {
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            }
             // Keep the hidden due date input synced with the calendar
             function setDueDate(date) {
                 document.getElementById('dueDateInput').value = toLocalIsoDate(date);
             }
-            function formatDisplayDue(date) {
-                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            function renderAssignmentCalendar() {
+                renderCalendar(assignments, initialDate, function(date) {
+                    setDueDate(date);
+                }, 'month', function(date, dayAssignments) {
+                    if (Array.isArray(dayAssignments) && dayAssignments.length > 0) {
+                        const firstMatch = dayAssignments[0];
+                        if (firstMatch && typeof firstMatch.index === 'number') {
+                            window.location.href = `add-Assignment.html?edit=${firstMatch.index}`;
+                            return;
+                        }
+                    }
+
+                    if (editIdx === null) return;
+
+                    const assignmentIndex = parseInt(editIdx, 10);
+                    if (!assignments[assignmentIndex]) return;
+
+                    assignments[assignmentIndex].due = formatDisplayDue(date);
+                    localStorage.setItem('assignments', JSON.stringify(assignments));
+                    setDueDate(date);
+
+                    if (typeof window.showNotification === 'function') {
+                        window.showNotification('Due date updated. Click Update Assignment to save other edits.', { icon: 'check', duration: 2600 });
+                    }
+                });
+            }
+            function refreshAddAssignmentView() {
+                try {
+                    assignments = JSON.parse(localStorage.getItem('assignments')) || [];
+                } catch {
+                    assignments = [];
+                }
+
+                if (typeof populateModuleSuggestions === 'function') {
+                    populateModuleSuggestions();
+                }
+
+                if (editIdx !== null && assignments[parseInt(editIdx)]) {
+                    const currentAssignment = assignments[parseInt(editIdx)];
+                    document.querySelector('input[name="Assignment_name"]').value = currentAssignment.name;
+                    document.querySelector('input[name="module"]').value = currentAssignment.module;
+
+                    let dateObj = new Date(currentAssignment.due);
+                    if (!isNaN(dateObj)) {
+                        initialDate = dateObj;
+                        setDueDate(dateObj);
+                    }
+                    document.querySelector('select[name="status"]').value = currentAssignment.status;
+                    document.querySelector('textarea[name="notes"]').value = currentAssignment.notes || '';
+                    document.querySelector('.save-btn').textContent = 'Update Assignment';
+                }
+
+                renderAssignmentCalendar();
             }
             setDueDate(initialDate);
-            renderCalendar(assignments, initialDate, function(date) {
-                setDueDate(date);
-            }, 'month', function(date, dayAssignments) {
-                if (Array.isArray(dayAssignments) && dayAssignments.length > 0) {
-                    const firstMatch = dayAssignments[0];
-                    if (firstMatch && typeof firstMatch.index === 'number') {
-                        window.location.href = `add-Assignment.html?edit=${firstMatch.index}`;
-                        return;
-                    }
-                }
-
-                if (editIdx === null) return;
-
-                const assignmentIndex = parseInt(editIdx, 10);
-                if (!assignments[assignmentIndex]) return;
-
-                assignments[assignmentIndex].due = formatDisplayDue(date);
-                localStorage.setItem('assignments', JSON.stringify(assignments));
-                setDueDate(date);
-
-                if (typeof window.showNotification === 'function') {
-                    window.showNotification('Due date updated. Click Update Assignment to save other edits.', { icon: 'check', duration: 2600 });
-                }
-            });
+            renderAssignmentCalendar();
+            window.addEventListener('assignments-updated', refreshAddAssignmentView);
     });
     </script>
 

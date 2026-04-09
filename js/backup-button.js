@@ -112,6 +112,7 @@
               const val = imported[k];
               localStorage.setItem(k, typeof val === 'string' ? val : JSON.stringify(val));
             });
+            window.dispatchEvent(new CustomEvent('assignments-updated', { detail: { source: 'backup-import', overwrite: true } }));
             alert('Import complete (existing keys overwritten).');
           } else {
             let added = 0;
@@ -122,6 +123,7 @@
                 added++;
               }
             });
+            window.dispatchEvent(new CustomEvent('assignments-updated', { detail: { source: 'backup-import', overwrite: false, added: added } }));
             alert('Import complete — ' + added + ' new keys added.');
           }
         } catch (err) {

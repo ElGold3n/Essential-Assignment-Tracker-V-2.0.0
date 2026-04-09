@@ -371,6 +371,19 @@
     renderTimetable(assignments);
     renderAssignmentCards(assignments);
 
+    function refreshOverviewFromStorage() {
+      const latestAssignments = getAssignments();
+      renderTimetable(latestAssignments);
+      renderAssignmentCards(latestAssignments);
+      const overdue = latestAssignments.filter(a => a.status === 'Overdue').length;
+      document.getElementById('overdueCount').textContent = overdue;
+      renderSemesterProgress(latestAssignments);
+      renderUpcomingWeek(latestAssignments);
+      renderTodayWorkload(latestAssignments);
+    }
+
+    window.addEventListener('assignments-updated', refreshOverviewFromStorage);
+
     // Show overdue count.
 
     const overdue = assignments.filter(a => a.status === 'Overdue').length;
