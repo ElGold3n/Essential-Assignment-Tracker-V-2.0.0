@@ -48,7 +48,9 @@ Created by: **Cameron Bruce**
 
 For: **SET08801 2025-6 TR2 001 / Web Technologies / Essential Assignment Tracker**
 
-Date: April 2026
+Date: May 2026
+
+Version: 2.0.0
 
                                       🚀 If I ever improve it, I'd like to add 
 
