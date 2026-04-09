@@ -711,7 +711,6 @@ function refreshDashboardFromStorage() {
     renderAssignments(latestAssignments);
 }
 
-window.refreshAppFromStorage = refreshDashboardFromStorage;
 window.addEventListener('assignments-updated', refreshDashboardFromStorage);
 
 // Show save/update toast after redirect.
