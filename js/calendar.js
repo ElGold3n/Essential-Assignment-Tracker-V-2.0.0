@@ -103,16 +103,55 @@ function renderCalendar(assignments, selectedDate, onDateSelect, viewMode = 'mon
                 else if (a.status === 'Due soon' && status !== 'overdue') status = 'due';
                 else if (a.status === 'Completed' && status !== 'overdue' && status !== 'due') status = 'done';
             }
-            const dot = document.createElement('span');
-            dot.className = 'calendar-dot calendar-dot-' + status;
-            dot.style.cursor = 'pointer';
+            // Create a container for dot indicators
+            const dotsContainer = document.createElement('div');
+            dotsContainer.className = 'calendar-dots-container';
+            dotsContainer.style.cursor = 'pointer';
+            
+            // If only one assignment, create a single large dot
+            if (dots[day].length === 1) {
+                const item = dots[day][0];
+                const a = item.assignment;
+                let itemStatus = 'active';
+                if (a.status === 'Overdue') itemStatus = 'overdue';
+                else if (a.status === 'Due soon') itemStatus = 'due';
+                else if (a.status === 'Completed') itemStatus = 'done';
+                
+                const dot = document.createElement('span');
+                dot.className = 'calendar-dot calendar-dot-single calendar-dot-' + itemStatus;
+                dotsContainer.appendChild(dot);
+            } else {
+                // Multiple assignments: create smaller dots side by side
+                const count = Math.min(dots[day].length, 3);
+                for (let i = 0; i < count; i++) {
+                    const item = dots[day][i];
+                    const a = item.assignment;
+                    let itemStatus = 'active';
+                    if (a.status === 'Overdue') itemStatus = 'overdue';
+                    else if (a.status === 'Due soon') itemStatus = 'due';
+                    else if (a.status === 'Completed') itemStatus = 'done';
+                    
+                    const dot = document.createElement('span');
+                    dot.className = 'calendar-dot calendar-dot-' + itemStatus;
+                    dotsContainer.appendChild(dot);
+                }
+                
+                // If more than 3 assignments, add an overflow indicator
+                if (dots[day].length > 3) {
+                    const overflow = document.createElement('span');
+                    overflow.className = 'calendar-overflow';
+                    overflow.textContent = '+';
+                    dotsContainer.appendChild(overflow);
+                }
+            }
+            
             // Tooltip shows assignment names for that day.
             const tooltip = dots[day].map(item => {
                 const a = item.assignment;
                 return a.name || a.Assignment_name || a.title || 'Assignment';
             }).join(', ');
-            dot.title = tooltip;
-            cell.appendChild(dot);
+            dotsContainer.title = tooltip;
+            cell.appendChild(dotsContainer);
             // Put same tooltip on the date cell.
             cell.title = tooltip;
         }
@@ -179,11 +218,14 @@ function renderCalendar(assignments, selectedDate, onDateSelect, viewMode = 'mon
 .calendar-cell.today { border: 2px solid #b411cf; }
 .calendar-cell:hover, .calendar-cell:focus { background: #e0e7ff; }
 .calendar-cell.empty { background: none; cursor: default; }
-.calendar-dot { display: block; width: 13px; height: 13px; background: #b411cf; border-radius: 50%; position: absolute; left: 50%; bottom: 6px; transform: translateX(-50%); cursor: pointer; }
+.calendar-dots-container { display: flex; flex-direction: row; gap: 2px; align-items: center; justify-content: center; position: absolute; left: 50%; bottom: 4px; transform: translateX(-50%); cursor: pointer; }
+.calendar-dot { display: block; width: 6px; height: 6px; background: #b411cf; border-radius: 50%; }
+.calendar-dot-single { width: 13px; height: 13px; }
 .calendar-dot-overdue { background: #dc3545; }
 .calendar-dot-due { background: #fd7e14; }
 .calendar-dot-done { background: #28a745; }
 .calendar-dot-active { background: #38b6ff; }
+.calendar-overflow { font-size: 0.7rem; font-weight: bold; color: #999; }
 @media (max-width: 600px) {
     #calendarContainer { max-width: 100vw; margin: 8px 0; }
     .calendar-header { flex-direction: column; gap: 4px; }
