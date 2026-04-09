@@ -59,3 +59,5 @@ Date: April 2026
 📱 A compact mobile-first layout mode for smaller screens.
 
 🎉 A celebration mode (confetti) when all active assignments are completed.
+
+🗑️ Add a bulk deletion feature.
