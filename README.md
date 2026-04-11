@@ -1,65 +1,103 @@
-    📚 About This Essential Assignment Tracker
+# Essential Assignment Tracker
 
+A lightweight client-side web application designed to help university students stay organised and manage coursework deadlines effectively. The application focuses on simplicity, usability, and real-time feedback without the complexity of larger platforms.
 
-This is a simple, personal Essential Assignment Tracker I built to help you stay organized during your university studies.
+---
 
-                                                  ✨ What it does
+## 🧱 Technologies Used
 
-📅 Shows upcoming Assignments and deadlines on the Home page
+![HTML](https://img.shields.io/badge/HTML-E34F26?logo=html5&logoColor=white&style=for-the-badge)
+![CSS](https://img.shields.io/badge/CSS-1572B6?logo=css3&logoColor=white&style=for-the-badge)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black&style=for-the-badge)
 
-➕ Lets you quickly add new Assignments with a name, due date, priority level, module, status, and optional notes.
+---
 
-🎯 Uses colored badges to highlight what's urgent (Due Soon / Overdue)
+## 📚 About This Project
 
-🧠 Includes smart module tools: module suggestions when adding, auto-learning module filters on Dashboard, and one-click Reset Filters.
+This is a personal Essential Assignment Tracker developed to support students in managing academic tasks more efficiently. It provides a clear and distraction-free environment for tracking assignments and deadlines.
 
-👤 Includes a persistent user profile circle in the sidebar where you can upload or remove your own photo.
+---
 
-🔊 Includes optional button sound feedback with a toggle, so users can enable or mute sounds anytime.
+## ✨ Key Features
 
-⏰ Shows a live date and time display in the header for quick schedule awareness.
+- 📅 Displays upcoming assignments and deadlines on the Home page  
+- ➕ Add assignments with name, due date, priority, module, status, and notes  
+- 🎯 Colour-coded badges to highlight urgent tasks (Due Soon / Overdue)  
+- 🧠 Smart module tools:
+  - Module suggestions during input  
+  - Auto-learning module filters on the dashboard  
+  - One-click **Reset Filters** feature  
+- 👤 Persistent user profile with image upload/remove functionality  
+- 🔊 Optional button sound feedback with toggle control  
+- ⏰ Live date and time display in the header  
+- ⚡ Fully lightweight — no login, no ads, no external dependencies  
 
-⚡ Keeps everything lightweight — no login, no ads, just your clear-cut Assignments.
+---
 
+## 🎯 Main Goals
 
-                                                    🎯 Main goal
+- 👁️ Provide a clear overview of what needs attention today or this week  
+- 💾 Enable backup and export of assignment data as JSON files  
+- 🔐 Store all data and preferences locally in the browser  
+- 🔇 Allow users to control sound feedback for a personalised experience  
 
-👁️ Allows you to see at a glance what needs attention today or this week, so you don't miss deadlines and can make better plans.
+---
 
-💾 Lets you back up and export your assignment data as a JSON file, then restore it by importing the same file.
+## ⚙️ How It Works
 
-🔐 Keeps your data and personal settings (such as profile image, username, and theme preferences) stored locally in your browser.
+The application runs entirely on the client side using JavaScript. All data is stored locally in the browser, ensuring privacy and eliminating the need for a backend system.
 
-🔇 Provides optional sound feedback with a user-controlled toggle, so you can choose between audible confirmations or a quiet workflow.
+Dynamic event handling updates the interface in real time without requiring page refreshes.
 
+---
 
-                                                   🛠️ Built with
+## 🖥️ Interface Overview
 
-🎨 HTML + CSS for layout and style
+The interface is designed to be clean and intuitive, featuring:
 
-⚙️ JavaScript for user interactions, dynamic features, and local storage persistence
+- A central dashboard for assignment management  
+- Filtering and sorting options  
+- Real-time visual and audio feedback  
+- Minimalist layout for improved focus and usability  
 
-🔗 Shared JavaScript/CSS modules to keep behavior and styling consistent across pages
+---
 
-📖 Inspired by my own handwritten Assignment notes and sketches
+## 🚀 How to Run
 
+1. Download or clone the repository  
+2. Open the project folder  
+3. Run `index.html` in a web browser  
 
-Created by: **Cameron Bruce**
+No installation or setup required.
 
-For: **SET08801 2025-6 TR2 001 / Web Technologies / Essential Assignment Tracker**
+---
 
-Date: May 2026
+## 🔊 Unique Feature
 
-Version: 2.0.0
+A distinctive feature of this tracker is the integration of audio feedback alongside visual notifications. This enhances user interaction by providing immediate confirmation of actions.
 
-                                      🚀 If I ever improve it, I'd like to add 
+---
 
-🔔 Assignment reminder notifications before due dates.
+## 🚀 Future Improvements
 
-📊 Progress analytics (weekly completion trends and workload charts).
+- 🔔 Assignment reminder notifications before deadlines  
+- 📊 Progress analytics (weekly trends and workload tracking)  
+- 📱 Mobile-first responsive layout optimisation  
+- 🎉 Celebration mode when all assignments are completed  
+- 🗑️ Bulk deletion functionality  
 
-📱 A compact mobile-first layout mode for smaller screens.
+---
 
-🎉 A celebration mode (confetti) when all active assignments are completed.
+## 📖 Inspiration
 
-🗑️ Add a bulk deletion feature.
+This project was inspired by personal handwritten assignment notes and early design sketches, which influenced the structure and usability of the interface.
+
+---
+
+## 🎓 Project Information
+
+**Created by:** Cameron Bruce  
+**Module:** SET08801 – Web Technologies  
+**Project:** Essential Assignment Tracker  
+**Date:** May 2026  
+**Version:** 2.0.0  
