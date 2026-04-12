@@ -255,7 +255,9 @@ window.addEventListener("load", () => {
             loaderHoldMs = Math.max(loaderHoldMs, remainingMs);
 
             if (remainingMs > 0) {
-                const resumedAudio = new Audio(sync.src || "FX/Ui-tap.wav");
+                const syncSrc = typeof sync.src === "string" ? sync.src : "";
+                const normalizedSyncSrc = /(^|\/)ui-tap\.wav$/i.test(syncSrc) ? "FX/ui-tap.wav" : syncSrc;
+                const resumedAudio = new Audio(normalizedSyncSrc || "FX/ui-tap.wav");
                 resumedAudio.preload = "auto";
                 const resumeSec = Math.max(0, elapsedMs / 1000);
                 const maxSec = Math.max(0, durationMs / 1000 - 0.05);
