@@ -22,19 +22,32 @@ This is a personal Essential Assignment Tracker developed to support students in
 
 ---
 
-## ✨ Key Features
+## ✨ Core Features
 
-- 📅 Displays upcoming assignments and deadlines on the Home page  
-- ➕ Add assignments with name, due date, priority, module, status, and notes  
-- 🎯 Colour-coded badges to highlight urgent tasks (Due Soon / Overdue)  
-- 🧠 Smart module tools:
+- 📅 Dashboard overview of upcoming assignments and deadlines  
+- ➕ Assignment creation with name, due date, priority, module, status, and notes  
+- 🎯 Colour-coded urgency badges (**yellow** for **Due Soon**, **red** for **Overdue**)  
+- 🧠 Smart module support:
   - Module suggestions during input  
   - Auto-learning module filters on the dashboard  
-  - One-click **Reset Filters** feature  
-- 👤 Persistent user profile with image upload/remove functionality  
-- 🔊 Optional button sound feedback with toggle control  
-- ⏰ Live date and time display in the header  
-- ⚡ Fully lightweight — no login, no ads, no external dependencies  
+  - 🔎 Filtering and sorting options for assignment views
+- 💾 Backup/export of assignment data as JSON  
+- 🔐 Local browser storage for assignments and preferences  
+
+- ⚡ Fully client-side and lightweight (no login, no ads, no external dependencies)  
+
+---
+
+## 🚀 Additional Features
+
+### Current Enhancements
+
+- 🔁 One-click **Reset Filters** option
+-  🔊 Optional button sound feedback with toggle control
+- 👤 Persistent user profile with image upload/remove functionality
+- ⏰ Live date and time display in the header
+- 🎧 Combined visual and audio action feedback  
+- 🎨 Minimalist, distraction-free interface focused on usability  
 
 ---
 
@@ -72,13 +85,13 @@ The interface is designed to be clean and intuitive, featuring:
 
 ---
 
-## 🚀 How to Run
+## 🏃‍➡️ How to Run
 
 1. Download or clone the repository  
 2. Open the project folder  
 3. Run `index.html` in a web browser  
 
-No installation or setup required.
+No installation or setup is required.
 
 ---
 
@@ -88,7 +101,7 @@ A distinctive feature of this tracker is the integration of audio feedback along
 
 ---
 
-## 🚀 Future Improvements
+## 🚧 Future Improvements
 
 - 🔔 Assignment reminder notifications before deadlines  
 - 📊 Progress analytics (weekly trends and workload tracking)  
@@ -97,6 +110,7 @@ A distinctive feature of this tracker is the integration of audio feedback along
 - 🗑️ Bulk deletion functionality  
 
 ---
+
 
 ## 📖 Inspiration
 
