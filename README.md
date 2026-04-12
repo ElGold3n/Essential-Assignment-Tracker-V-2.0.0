@@ -60,7 +60,7 @@ The interface is designed to be clean and intuitive, featuring:
 - Real-time visual and audio feedback  
 - Minimalist layout for improved focus and usability
 
-
+---
 
 <p align="center">
   <img src="Dashboard_Readme.jpg" alt="Dashboard Screenshot" width="900"/>
