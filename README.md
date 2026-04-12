@@ -61,7 +61,7 @@ The interface is designed to be clean and intuitive, featuring:
 - Minimalist layout for improved focus and usability
 
 <p align="center">
-  <img src="Dashboard_Readme.png" alt="Dashboard Screenshot" width="900"/>
+  <img src="Dashboard_Readme.jpg" alt="Dashboard Screenshot" width="900"/>
 </p> 
 
 ---
