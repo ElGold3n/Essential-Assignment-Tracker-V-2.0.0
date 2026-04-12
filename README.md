@@ -80,7 +80,7 @@ The interface is designed to be clean and intuitive, featuring:
 ---
 
 <p align="center">
-  <img src="Dashboard_Readme.jpg" alt="Dashboard Screenshot" width="900"/>
+  <img src="README_ASSETS/Dashboard_Readme.jpg" alt="Dashboard Screenshot" width="900"/>
 </p> 
 
 ---
@@ -91,7 +91,9 @@ The interface is designed to be clean and intuitive, featuring:
 2. Open the project folder  
 3. Run `index.html` in a web browser  
 
-No installation or setup is required.
+⛔ No installation or setup is required.
+
+🎧 Sound effect files are stored in the `FX/` folder.
 
 ---
 

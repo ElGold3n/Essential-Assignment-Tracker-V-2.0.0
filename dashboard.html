@@ -152,7 +152,7 @@ if (localStorage.getItem("loadingTransition") === "true") {
         <div style="display: flex; gap: 12px; margin-top: 25px;">
                 <a href="add-Assignment.html" class="add-btn" id="addAssignmentBtn">+ Add New Assignment</a>
                 <button id="deleteAssignmentBtn" class="add-btn" style="background:#dc3545;" disabled>🗑️ Delete Assignment</button>
-                <audio id="deleteSound" src="ui-delete.wav" preload="auto"></audio>
+                <audio id="deleteSound" src="FX/ui-delete.wav" preload="auto"></audio>
         </div>
     <style>
         .smoke-effect {
@@ -231,7 +231,7 @@ if (localStorage.getItem("loadingTransition") === "true") {
         <script src="js/button-sounds.js"></script>
         <script>
         window.addEventListener('DOMContentLoaded', function() {
-            setupButtonSound(document.getElementById('deleteAssignmentBtn'), 'ui-delete.wav');
+            setupButtonSound(document.getElementById('deleteAssignmentBtn'), 'FX/ui-delete.wav');
         });
         </script>
 </div>
@@ -255,7 +255,7 @@ window.addEventListener("load", () => {
             loaderHoldMs = Math.max(loaderHoldMs, remainingMs);
 
             if (remainingMs > 0) {
-                const resumedAudio = new Audio(sync.src || "ui-tap.wav");
+                const resumedAudio = new Audio(sync.src || "FX/Ui-tap.wav");
                 resumedAudio.preload = "auto";
                 const resumeSec = Math.max(0, elapsedMs / 1000);
                 const maxSec = Math.max(0, durationMs / 1000 - 0.05);

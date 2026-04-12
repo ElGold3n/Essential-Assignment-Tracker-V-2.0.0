@@ -24,6 +24,6 @@ function setupButtonSound(btn, soundFile) {
 }
 
 // Example calls (after DOM is ready):
-// setupButtonSound(document.getElementById('deleteAssignmentBtn'), 'ui-delete.wav');
-// setupButtonSound(document.querySelector('.save-btn'), 'ui-save.wav');
-// setupButtonSound(document.querySelector('.update-btn'), 'ui-update.wav');
+// setupButtonSound(document.getElementById('deleteAssignmentBtn'), 'FX/ui-delete.wav');
+// setupButtonSound(document.querySelector('.save-btn'), 'FX/ui-save.wav');
+// setupButtonSound(document.querySelector('.update-btn'), 'FX/ui-update.wav');

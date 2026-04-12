@@ -34,7 +34,7 @@
 
   const rawName = (localStorage.getItem('username') || 'Student').trim();
   const userName = rawName || 'Student';
-  const ROOT_PROFILE_IMAGE = 'USER%20ICON.png';
+  const ROOT_PROFILE_IMAGE = 'Icons/USER%20ICON.png';
   const DEFAULT_PROFILE_IMAGE = 'Icons/user.svg';
   const savedProfileImg = localStorage.getItem('userProfileImage');
   const initialProfileImg = savedProfileImg || ROOT_PROFILE_IMAGE;
