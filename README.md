@@ -58,7 +58,11 @@ The interface is designed to be clean and intuitive, featuring:
 - A central dashboard for assignment management  
 - Filtering and sorting options  
 - Real-time visual and audio feedback  
-- Minimalist layout for improved focus and usability  
+- Minimalist layout for improved focus and usability
+
+<p align="center">
+  <img src="Dashboard_Readme.png" alt="Dashboard Screenshot" width="900"/>
+</p> 
 
 ---
 
