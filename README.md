@@ -3,6 +3,10 @@
 A lightweight client-side web application designed to help university students stay organised and manage coursework deadlines effectively. The application focuses on simplicity, usability, and real-time feedback without the complexity of larger platforms.
 
 ---
+## 🔗 Live Demo
+[View the application](https://elgold3n.github.io/Essential-Assignment-Tracker-V-2.0.0/ )
+
+---
 
 ## 🧱 Technologies Used
 
