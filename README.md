@@ -18,7 +18,7 @@ A lightweight client-side web application designed to help university students s
 
 ## 📄 Legal
 
-[![License](https://img.shields.io/badge/License-Proprietary-7c3aed?style=for-the-badge)](./LICENSE.txt)
+[![License](https://img.shields.io/badge/License-Proprietary-7c3aed?style=for-the-badge)](./LICENSE)
 [![Terms](https://img.shields.io/badge/Terms-Of%20Use-a855f7?style=for-the-badge)](./TERMS_OF_USE.md)
 
 ---
@@ -129,7 +129,7 @@ This project was inspired by personal handwritten assignment notes and early des
 This project is protected under a proprietary license and includes defined terms of use.
 
 - 📘 [Terms of Use](./TERMS_OF_USE.md)
-- 🔒 [License](./LICENSE.txt)
+- 🔒 [License](./LICENSE)
 
 > 🎓 This project is for learning and usage only. Do not submit it as your own academic work.
 ---
