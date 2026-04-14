@@ -1,11 +1,12 @@
-```
-Custom Software License
-Essential Assignment Tracker
-Version 2.0.0
+# Custom Software License
 
-```
+### Essential Assignment Tracker
 
-Copyright (c) 2026 Cameron Bruce. All rights reserved.
+**Version 2.0.0**
+
+---
+
+**Copyright (c) 2026 Cameron Bruce. All rights reserved.**
 
 ---
 
@@ -21,7 +22,7 @@ Copyright (c) 2026 Cameron Bruce. All rights reserved.
 
 ## 2. Restrictions
 
-**2.1** This Software may be accessed and used by end users for its intended purpose. However, the source code must not be copied, modified, reproduced, or reused, in whole or in part, without prior permission from the author.
+**2.1** While the Software may be accessed and used by end users for its intended purpose, the source code must not be copied, modified, reproduced, or reused, in whole or in part, without prior permission from the author.
 
 **2.2** Access to this repository does not grant any rights to reuse, alter, or implement the code in other projects.
 
@@ -53,4 +54,4 @@ Copyright (c) 2026 Cameron Bruce. All rights reserved.
 
 ---
 
-END OF TERMS
+## END OF TERMS
