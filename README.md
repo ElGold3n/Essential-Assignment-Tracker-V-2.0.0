@@ -16,7 +16,7 @@ A lightweight, client-side web application designed to help university students 
 
 ---
 
-## 🧱 Technologies Used
+##  🛠️ Technologies Used
 
 ![HTML](https://img.shields.io/badge/HTML-E34F26?logo=html5&logoColor=white&style=plastic)
 ![CSS](https://img.shields.io/badge/CSS-663399?logo=css3&logoColor=white&style=plastic)
@@ -24,7 +24,7 @@ A lightweight, client-side web application designed to help university students 
 
 ---
 
-## 📄 Legal
+## ⚖️ Legal
 
 [![License](https://img.shields.io/badge/License-Academic%20Only-a855f7?style=plastic)](./LICENSE) 
 
