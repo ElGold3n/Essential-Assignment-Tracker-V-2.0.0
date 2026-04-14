@@ -12,7 +12,7 @@ Users are permitted to:
 
 * ✔️ Use the application to manage and track their own academic work
 * ✔️ Interact with all available features for personal, non-commercial purposes
-* ✔️ Access the application via its deployed version (e.g., web browser)
+* ✔️ Access the application via its deployed version (e.g. web browser)
 
 ---
 
