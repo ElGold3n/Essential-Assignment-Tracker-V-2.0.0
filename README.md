@@ -1,8 +1,16 @@
-# 🎓 Essential Assignment Tracker V 2.0.0
+# <h1 align="center">🎓 Essential Assignment Tracker V 2.0.0</h1>
 
-A lightweight client-side web application designed to help university students stay organised and manage coursework deadlines effectively. The application focuses on simplicity, usability, and real-time feedback without the complexity of larger platforms.
 
----
+<p align="center">
+  <a href="https://elgold3n.github.io/Essential-Assignment-Tracker-V-2.0.0/" style="text-decoration: none;">
+    <img src="https://img.shields.io/badge/Version-2.0.0-7c3aed?style=plastic&logo=github&logoColor=white" />
+    <img src="https://img.shields.io/badge/Status-Stable-4CAF50?style=plastic&logo=check-circle&logoColor=white" />
+    <img src="https://img.shields.io/badge/Live-Demo-f97316?style=plastic&logo=vercel&logoColor=white" />
+  </a>
+</p>
+
+A lightweight, client-side web application designed to help university students stay organised and effectively manage coursework deadlines. The application prioritises simplicity, usability, and real-time feedback, offering a focused alternative to more complex platforms.
+
 ## 🔗 Live Demo
 [View the application](https://elgold3n.github.io/Essential-Assignment-Tracker-V-2.0.0/ )
 
@@ -20,7 +28,11 @@ A lightweight client-side web application designed to help university students s
 
 [![License](https://img.shields.io/badge/License-Academic%20Only-a855f7?style=plastic)](./LICENSE) 
 
-[![Terms](https://img.shields.io/badge/Terms-Of%20Use-a855f7?style=plastic)](./TERMS_OF_USE.md)
+[![Terms](https://img.shields.io/badge/Terms-Of%20Use-1E3A8A?style=plastic)](./TERMS_OF_USE.md)
+
+[![Code](https://img.shields.io/badge/Code-Protected-DC2626?style=plastic&logo=github&logoColor=white)](./LICENSE)
+
+> 🎓 Academic use only. Source code is protected and must not be reused or submitted as original work.
 
 ---
 
@@ -125,15 +137,7 @@ A distinctive feature of this tracker is the integration of audio feedback along
 This project was inspired by personal handwritten assignment notes and early design sketches, which influenced the structure and usability of the interface.
 
 ---
-## 📄 Legal
 
-This project is protected under a proprietary license and includes defined terms of use.
-
-- 📘 [Terms of Use](./TERMS_OF_USE.md)
-- 🔒 [License](./LICENSE)
-
-> 🎓 This project is for learning and usage only. Do not submit it as your own academic work.
----
 
 ## 🎓 Project Information
 
