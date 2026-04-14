@@ -18,7 +18,7 @@ A lightweight client-side web application designed to help university students s
 
 ## 📄 Legal
 
-[![License](https://img.shields.io/badge/License-Proprietary-7c3aed?style=for-the-badge)](./LICENSE)
+[![License](https://img.shields.io/badge/Use-Academic%20Only-a855f7?style=for-the-badge)](./LICENSE) 
 [![Terms](https://img.shields.io/badge/Terms-Of%20Use-a855f7?style=for-the-badge)](./TERMS_OF_USE.md)
 
 ---
