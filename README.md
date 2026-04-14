@@ -112,12 +112,19 @@ A distinctive feature of this tracker is the integration of audio feedback along
 - 🗑️ Bulk deletion functionality  
 
 ---
-
-
 ## 📖 Inspiration
 
 This project was inspired by personal handwritten assignment notes and early design sketches, which influenced the structure and usability of the interface.
 
+---
+## 📄 Legal
+
+This project is protected under a proprietary license and includes defined terms of use.
+
+- 📘 [Terms of Use](./TERMS_OF_USE.md)
+- 🔒 [License](./LICENSE.txt)
+
+> 🎓 This project is for learning and usage only. Do not submit it as your own academic work.
 ---
 
 ## 🎓 Project Information
