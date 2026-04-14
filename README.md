@@ -16,6 +16,13 @@ A lightweight client-side web application designed to help university students s
 
 ---
 
+## 📄 Legal
+
+[![License](https://img.shields.io/badge/License-Proprietary-7c3aed?style=for-the-badge)](./LICENSE.txt)
+[![Terms](https://img.shields.io/badge/Terms-Of%20Use-a855f7?style=for-the-badge)](./TERMS_OF_USE.md)
+
+---
+
 ## 📚 About This Project
 
 This is a personal Essential Assignment Tracker developed to support students in managing academic tasks more efficiently. It provides a clear and distraction-free environment for tracking assignments and deadlines.
