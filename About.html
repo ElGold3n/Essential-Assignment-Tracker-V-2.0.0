@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- About page for app info and credits. -->
+<!-- About page with app details, features, and credits -->
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<!-- Header with title, theme toggle, clock, and nav menu. -->
+<!-- Top bar with title, dark mode button, and live time -->
 
 <div class="header">
     <div style="display: flex; align-items: center; width: 100%; justify-content: space-between;">
@@ -41,8 +41,10 @@
     </div>
 </div>
 
+<!-- Shared sidebar nav (built by shared-nav.js) -->
 <div class="nav" data-shared-nav></div>
 
+<!-- Main content for the About page -->
 <div class="content">
     <h2>About This Essential Assignment Tracker</h2>
 
@@ -54,6 +56,7 @@
             The application prioritises simplicity, usability, and real-time feedback, offering a focused alternative to more complex platforms.
         </p>
 
+        <!-- Core tech stack used in this project -->
         <p class="highlight">🛠️ Technologies Used</p>
         <ul class="tech-icons" aria-label="Technologies used">
             <li class="tech-icon-item" aria-label="HTML">
@@ -104,6 +107,7 @@
         <p class="legal-disclaimer">🎓 Academic use only. Source code is protected and must not be reused or submitted as original work.</p>
         <hr class="section-divider">
         
+        <!-- Main features explained quickly -->
         <p class="highlight">What it does:</p>
         <ul>
             <li>📅 Dashboard overview of upcoming assignments and deadlines</li>
@@ -124,6 +128,7 @@
 
         <hr class="section-divider">
 
+        <!-- Extra enhancements added in this version -->
         <p class="highlight">🚀 Additional Features</p>
         <p class="highlight" style="margin-top:-8px; font-size: 0.98rem; opacity: 0.9;">Current Enhancements</p>
         <ul>
@@ -136,6 +141,7 @@
         </ul>
         <hr class="section-divider">
 
+        <!-- What this app is mainly trying to help with -->
         <p class="highlight">Main goals:</p>
         <ul>
             <li>👁️ Provide a clear overview of what needs attention today or this week.
@@ -146,6 +152,7 @@
 
         <hr class="section-divider">
 
+        <!-- Quick technical summary of how the app runs -->
         <p class="highlight">⚙️ How It Works
         <ul>
             <li>The application runs entirely on the client side using JavaScript. All data is stored locally in the browser, ensuring privacy and eliminating the need for a backend system.</li>
@@ -154,6 +161,7 @@
 
         
         <hr class="section-divider">
+    <!-- Project details for module submission -->
     <p class="highlight"> 🎓 Project Information</p>
         <p style="margin-top: 30px;">
 
@@ -197,7 +205,7 @@
         }
         </style>
         <script>
-        // Adds a hover smoke effect to the Back to Home button.
+        // Small smoke glow follows the cursor over Back to Home.
         (function() {
             const btn = document.getElementById('backHomeBtn');
             if (!btn) return;
@@ -213,12 +221,12 @@
                 smoke.style.display = 'block';
                 smoke.style.opacity = '0.45';
                 const btnRect = btn.getBoundingClientRect();
-                // Place smoke relative to the button area.
+                // Position smoke inside button bounds.
                 smoke.style.left = (x - btnRect.left - 35) + 'px';
                 smoke.style.top = (y - btnRect.top - 35) + 'px';
                 if (fadeTimeout) clearTimeout(fadeTimeout);
                 if (stopTimeout) clearTimeout(stopTimeout);
-                // Fade smoke when mouse stops moving.
+                // Fade out after mouse stops moving.
                 stopTimeout = setTimeout(() => {
                     smoke.style.opacity = '0';
                     fadeTimeout = setTimeout(() => { if (smoke) smoke.style.display = 'none'; }, 500);
@@ -248,6 +256,6 @@
 </div>
 
 </body>
-<!-- Backup controls are handled by shared-nav.js -->
+<!-- Backup/import behavior is handled in shared-nav.js -->
 <script src="js/export-button.js"></script>
 </html>
