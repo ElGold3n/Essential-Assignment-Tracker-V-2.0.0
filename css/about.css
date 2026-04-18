@@ -1,21 +1,21 @@
-/* about page styles */
+/* about.css - Styles for the About page */
 
-/* ---------- dark mode ---------- */
+/* ========== DARK MODE STYLES ========== */
 
-/* dark card area colors */
+/* Content area background and text in dark mode */
 
 .dark-mode .content {
   background: #161b22 !important;
   color: #e0e0e0 !important;
 }
 
-/* dark style for backup menu */
+/* Gear menu (backup/restore) in dark mode */
 .dark-mode .gear-menu {
   background: #23263a !important;
   color: #e0e0e0 !important;
 }
 
-/* keep backup text readable in dark mode */
+/* Make export/backup text white in dark mode */
 
 .dark-mode #backupMenu .hint,
 .dark-mode #backupMenu button,
@@ -23,18 +23,18 @@
   color: #fff !important;
 }
 
-/* about section in dark mode */
+/* Info section background in dark mode */
 .dark-mode .section {
   background: #161b22 !important;
   color: #e0e0e0 !important;
 }
 
-/* highlight color in dark mode */
+/* Highlighted text in dark mode */
 .dark-mode .section .highlight {
   color: #b411cf !important;
 }
 
-/* page + header dark background */
+/* Body and header backgrounds in dark mode */
 .dark-mode body {
   background: #0d1117 !important;
   color: #e0e0e0 !important;
@@ -44,13 +44,13 @@
   color: #fff;
 }
 
-/* dark card fallback */
+/* Card backgrounds in dark mode */
 .dark-mode .card {
   background: #161b22 !important;
   color: #e0e0e0 !important;
 }
 
-/* nav link colors in dark mode */
+/* Navigation links in dark mode */
 .dark-mode .nav a {
   color: #fff;
 }
@@ -58,9 +58,9 @@
   color: #58a6ff;
 }
 
-/* ---------- light mode + general ---------- */
+/* ========== LIGHT MODE & GENERAL STYLES ========== */
 
-/* base page look */
+/* Main body font and background */
 body {
   font-family: Arial, sans-serif;
   background: #fdfdfd;
@@ -69,7 +69,7 @@ body {
   line-height: 1.6;
 }
 
-/* top header bar */
+/* Header bar at the top of the page */
 .header {
   background: #270f2b;
   color: white;
@@ -80,7 +80,7 @@ body {
   box-shadow: 0 3px 7px rgba(0,0,0,0.15);
 }
 
-/* back button */
+/* Back button (top left) */
 .back-btn {
   color: #f3f8f2;
   font-size: 1.3rem;
@@ -90,17 +90,17 @@ body {
   align-items: center;
   gap: 6px;
 }
-/* back button hover */
+/* Back button hover effect */
 .back-btn:hover { color: #a5d8ff; }
 
-/* top nav links */
+/* Navigation links (top right) */
 .nav a {
   color: white;
   margin-left: 20px;
   text-decoration: none;
   font-weight: bold;
 }
-/* nav hover color */
+/* Navigation link hover effect */
 .nav a:hover { color: #a5d8ff; }
 
 .nav a.active {
@@ -109,7 +109,7 @@ body {
   text-underline-offset: 4px;
 }
 
-/* main about container */
+/* Main content area */
 .content {
   max-width: 800px;
   margin: 40px auto;
@@ -120,25 +120,25 @@ body {
   text-align: center;
 }
 
-/* heading style */
+/* Main heading */
 h1 {
   color: #f2e7f4;
   margin: 0 0 25px;
   font-size: 1.5rem;
 }
 
-/* big title icon */
+/* Graduation cap icon */
 .icon {
   font-size: 6rem;
   margin-bottom: 20px;
 }
 
-/* left controls group */
+/* Grouping for back button and gear */
 .left-group { display: flex; align-items: center; gap: 8px; }
 
-/* settings wrapper */
+/* Settings gear button */
 .settings { position: relative; display: inline-block; z-index: 60; }
-/* gear button style */
+/* Gear (settings) button style */
 .gear-btn {
   background: transparent;
   border: none;
@@ -150,7 +150,7 @@ h1 {
   border-radius: 6px;
 }
 
-/* backup dropdown */
+/* Backup/restore dropdown menu */
 .gear-menu {
   position: absolute;
   left: 0;
@@ -168,19 +168,19 @@ h1 {
   width: 180px;
   overflow: hidden;
 }
-/* open state for dropdown */
+/* Show gear menu when open */
 .gear-menu[aria-hidden="false"] {
   transform: scale(1);
   opacity: 1;
   pointer-events: auto;
 }
-/* keyboard focus also opens dropdown */
+/* Show gear menu on focus */
 .settings:focus-within .gear-menu {
   transform: scale(1);
   opacity: 1;
   pointer-events: auto;
 }
-/* dropdown buttons */
+/* Buttons inside gear menu */
 .gear-menu button {
   display: block;
   width: 100%;
@@ -191,23 +191,207 @@ h1 {
   cursor: pointer;
   font-size: 0.95rem;
 }
-/* dropdown hover */
+/* Gear menu button hover */
 .gear-menu button:hover { background: #f4f6f8; }
-/* small hint text in menu */
+/* Hint text in gear menu */
 .gear-menu .hint {
   font-size: 0.8rem;
   color: #666;
   padding: 8px 12px;
 }
 
-/* about text block */
+/* Info section (about text) */
 .section { max-width: 600px; margin: 0 auto 35px; text-align: left; }
-/* list spacing + highlighted labels */
+/* List and highlight styles */
 ul { padding-left: 20px; margin: 15px 0; }
 ul li { margin: 10px 0; }
 .highlight { font-weight: bold; color: #2c3e50; }
 
-/* tiny footer message */
+/* Technology icon row */
+.tech-icons {
+  list-style: none;
+  padding-left: 0;
+  margin: 14px 0 22px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tech-icon-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f4f6f8;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.tech-icon-item svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.dark-mode .tech-icon-item {
+  background: #23263a;
+  border-color: #3a3f55;
+  color: #e6edf3;
+}
+
+/* Legal badge stack */
+.legal-badge-stack {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  margin: 8px 0 22px;
+}
+
+.legal-badge-row {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.18);
+}
+
+.legal-badge-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  min-height: 24px;
+  color: #ffffff;
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0.12) 38%, rgba(255, 255, 255, 0) 39%),
+    linear-gradient(180deg, #5b6470 0%, #3b434e 48%, #262c35 100%);
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.legal-badge-icon svg {
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+
+.legal-badge-segment {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  padding: 0 10px;
+  color: #fff;
+  font-size: 1.05rem;
+  line-height: 1;
+  font-weight: 600;
+  position: relative;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.legal-badge-segment.left {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+.legal-badge-row.has-icon .legal-badge-segment {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.legal-badge-segment.right {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.badge-license {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.08) 38%, rgba(255, 255, 255, 0) 39%),
+    linear-gradient(180deg, #808896 0%, #5e6672 48%, #3f4752 100%);
+}
+
+.badge-academic {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.30) 0%, rgba(255, 255, 255, 0.10) 38%, rgba(255, 255, 255, 0) 39%),
+    linear-gradient(180deg, #b25df0 0%, #8a36d4 48%, #5d1f9f 100%);
+}
+
+.badge-terms {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.08) 38%, rgba(255, 255, 255, 0) 39%),
+    linear-gradient(180deg, #8a919a 0%, #676f79 48%, #474e58 100%);
+}
+
+.badge-use {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.30) 0%, rgba(255, 255, 255, 0.10) 38%, rgba(255, 255, 255, 0) 39%),
+    linear-gradient(180deg, #4d84de 0%, #3368bf 48%, #21408f 100%);
+}
+
+.badge-code {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.08) 38%, rgba(255, 255, 255, 0) 39%),
+    linear-gradient(180deg, #626973 0%, #454c56 48%, #2d333c 100%);
+}
+
+.badge-protected {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0.12) 38%, rgba(255, 255, 255, 0) 39%),
+    linear-gradient(180deg, #ff5b5b 0%, #e93c3c 48%, #bf1f1f 100%);
+}
+
+.dark-mode .legal-badge-row {
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.26);
+}
+
+.dark-mode .legal-badge-icon {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.08) 38%, rgba(255, 255, 255, 0) 39%),
+    linear-gradient(180deg, #697383 0%, #434b57 48%, #2d333d 100%);
+}
+
+.legal-disclaimer {
+  max-width: 520px;
+  margin: 14px 0 0;
+  font-size: 0.98rem;
+  line-height: 1.45;
+  color: #5d6470;
+}
+
+.dark-mode .legal-disclaimer {
+  color: #b7c0ce;
+}
+
+.section-divider {
+  width: 100%;
+  height: 1px;
+  border: 0;
+  margin: 22px 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(56, 182, 255, 0.35) 18%, rgba(180, 17, 207, 0.45) 50%, rgba(56, 182, 255, 0.35) 82%, transparent 100%);
+}
+
+.dark-mode .section-divider {
+  background: linear-gradient(90deg, transparent 0%, rgba(88, 166, 255, 0.22) 18%, rgba(180, 17, 207, 0.38) 50%, rgba(88, 166, 255, 0.22) 82%, transparent 100%);
+}
+
+/* Footer note at the bottom */
 .footer-note {
   margin-top: 50px;
   color: #6c757d;
@@ -215,7 +399,7 @@ ul li { margin: 10px 0; }
   font-size: 1.1rem;
 }
 
-/* bottom back-home button */
+/* Back to Home button at the bottom */
 .back-bottom {
   display: inline-block;
   margin-top: 40px;

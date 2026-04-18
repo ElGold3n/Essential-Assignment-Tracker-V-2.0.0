@@ -1,5 +1,5 @@
-<!-- Dashboard page: view, filter, edit, and delete assignments. -->
-<!-- Styling is from dashboard.css and shared-nav.css. -->
+<!-- Dashboard page for viewing and managing assignments -->
+<!-- Styles are loaded from dashboard.css + shared-nav.css -->
 <link rel="stylesheet" href="css/dashboard.css">
 <link rel="stylesheet" href="css/shared-nav.css">
 <link rel="stylesheet" href="css/toast.css">
@@ -8,7 +8,7 @@
 <script src="js/shared-nav.js" defer></script>
 <script src="js/time-display.js" defer></script>
 
-<!-- Loader overlay styles -->
+<!-- Loader style block -->
 <style>
 #loaderOverlay {
     position: fixed;
@@ -31,7 +31,7 @@
     pointer-events:all;
 }
 
-/* Keep loader visible before full page reveal */
+/* Keep loader visible until reveal is done */
 html.preload-transition-pending .header,
 html.preload-transition-pending .content {
     opacity: 1;
@@ -71,21 +71,21 @@ if (localStorage.getItem("loadingTransition") === "true") {
 </head>
 
 <body>
-    <!-- Loader overlay -->
+    <!-- Page loader overlay -->
     <div id="loaderOverlay">
             <div class="spinner"></div>
     </div>
 
-<!-- Toast messages appear here -->
+<!-- Toast notification container -->
 
 <div id="toastContainer" style="position:fixed;z-index:9999;pointer-events:none;"></div>
 
-<!-- Top header -->
+<!-- Header row -->
 
 <div class="header" style="display:flex;align-items:center;justify-content:space-between;">
     <h1 style="flex:1;">🎓 Essential Assignment Tracker
 
-        <!-- Dark mode toggle -->
+        <!-- Dark mode button -->
 
         <button id="darkModeToggle" aria-label="Toggle dark mode" style="background:none;border:none;cursor:pointer;margin-left:12px;vertical-align:middle;outline:none;position:relative;">
             <span id="darkModeIcon" style="display:inline-block;width:42px;height:42px;vertical-align:middle;">
@@ -96,23 +96,23 @@ if (localStorage.getItem("loadingTransition") === "true") {
     </h1>
     <div id="timeDisplay" style="margin-right:50px;"></div>
 
-    <!-- Shared nav links -->
+    <!-- Shared sidebar nav -->
 
     <div class="nav" data-shared-nav></div>
 </div>
-<!-- Main content -->
+<!-- Main dashboard content -->
 
 <div class="content">
     
-    <!-- Summary cards -->
+    <!-- Stats cards -->
 
     <div class="stats" id="stats">
 
-        <!-- Cards rendered by JS -->
+        <!-- JS renders these cards -->
     </div>
     <h2>Upcoming Assignments</h2>
 
-    <!-- Search and filters -->
+    <!-- Search + filter controls -->
      
     <div class="controls">
         <input type="text" id="searchInput" placeholder="Search Assignments..." />
@@ -129,7 +129,7 @@ if (localStorage.getItem("loadingTransition") === "true") {
         <button type="button" id="resetFiltersBtn">Reset Filters</button>
     </div>
 
-    <!-- Assignments table -->
+    <!-- Assignment table -->
 
     <table>
         <thead>
@@ -143,11 +143,11 @@ if (localStorage.getItem("loadingTransition") === "true") {
         </thead>
         <tbody id="assignmentTable">
 
-            <!-- Rows rendered by JS -->
+            <!-- JS inserts table rows here -->
         </tbody>
     </table>
 
-    <!-- Add and delete controls -->
+    <!-- Add and delete action buttons -->
 
         <div style="display: flex; gap: 12px; margin-top: 25px;">
                 <a href="add-Assignment.html" class="add-btn" id="addAssignmentBtn">+ Add New Assignment</a>
@@ -168,7 +168,7 @@ if (localStorage.getItem("loadingTransition") === "true") {
     </style>
         <script>
 
-        // Hover smoke effect for Add/Delete buttons.
+        // Simple smoke hover effect for add/delete buttons.
 
         function addSmokeEffect(btn, color) {
             let smoke = null;
@@ -192,16 +192,16 @@ if (localStorage.getItem("loadingTransition") === "true") {
             btn.addEventListener('mousemove', e => {
                 if (!smoke) return;
 
-                // Move smoke with the mouse over the button.
+                // Move smoke with cursor over the button.
 
                 const rect = btn.getBoundingClientRect();
 
-                // Keep smoke inside button bounds.
+                // Keep smoke inside button area.
 
                 let x = e.clientX - 30;
                 let y = e.clientY - 30;
 
-                // Clamp to edge if cursor leaves button area.
+                // Clamp to nearest edge if cursor leaves bounds.
                 
                 if (e.clientX < rect.left) x = rect.left;
                 if (e.clientX > rect.right) x = rect.right - 60;
@@ -236,7 +236,7 @@ if (localStorage.getItem("loadingTransition") === "true") {
         </script>
 </div>
 <script>
-// Show loader when entering from the welcome page transition.
+// Show loader when coming from welcome transition.
 window.addEventListener("load", () => {
     const loader = document.getElementById("loaderOverlay");
     const fromTransition = localStorage.getItem("loadingTransition") === "true";
@@ -244,7 +244,7 @@ window.addEventListener("load", () => {
     const soundEnabled = localStorage.getItem("soundEnabled") !== "0";
     let loaderHoldMs = 600;
 
-    // Resume entry sound if it was already playing.
+    // Resume entry sound if it already started.
     if (syncRaw && soundEnabled) {
         try {
             const sync = JSON.parse(syncRaw);
@@ -285,7 +285,7 @@ window.addEventListener("load", () => {
         document.documentElement.classList.remove("preload-transition-pending");
     }
 });
-// Date helpers and assignment loading.
+// Date helper functions + assignment loading.
 
 function parseDueDate(value) {
     if (!value) return null;
@@ -319,12 +319,12 @@ function toDisplayDueDate(date) {
 
 function getAssignments() {
 
-    // Load assignments from localStorage.
+    // Get saved assignments from localStorage.
 
     const data = localStorage.getItem('assignments');
     let arr = data ? JSON.parse(data) : [];
 
-    // Auto-update status based on due date.
+    // Auto-update status from due date.
 
     const today = new Date();
     today.setHours(0,0,0,0);
@@ -351,7 +351,7 @@ function getAssignments() {
     return arr;
 }
 
-// Save assignments to localStorage.
+// Save assignments back to localStorage.
 
 function saveAssignments(arr) {
     localStorage.setItem('assignments', JSON.stringify(arr));

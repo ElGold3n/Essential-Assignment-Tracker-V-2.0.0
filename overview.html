@@ -11,7 +11,7 @@
     <script src="js/shared-nav.js" defer></script>
     <script src="js/time-display.js" defer></script>
 
-    <!-- Main styling is in css/overview.css -->
+    <!-- Main page styling lives in css/overview.css -->
 </head>
 <body>
   <div class="container">
@@ -29,7 +29,7 @@
     </div>
     <div class="container">
 
-    <!-- Overview cards for progress, week, overdue, and today -->
+    <!-- Summary cards: progress, week, overdue, and today -->
     
     <div class="dashboard">
       <div class="card">
@@ -39,7 +39,7 @@
           <div style="width:90%;height:14px;background:#e2e8f0;border-radius:7px;overflow:hidden;">
             <div id="progressBar" style="height:100%;width:0%;background:#4caf50;border-radius:7px;transition:width 0.5s;position:relative;overflow:hidden;"></div>
             <div id="progressGloss" style="position:absolute;top:0;left:0;height:100%;width:100%;pointer-events:none;z-index:2;"></div>
-                // Animate a gloss effect on the progress bar.
+                // Add moving gloss effect on progress bar.
                 const gloss = document.getElementById('progressGloss');
                 gloss.style.background = 'linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.45) 40%, rgba(255,255,255,0.18) 80%)';
                 gloss.style.backgroundSize = '200% 100%';
@@ -77,10 +77,10 @@
       </div>
     </div>
 
-    <!-- Weekly timetable -->
+    <!-- Weekly timetable section -->
 
 
-    <!-- Shows assignments by weekday -->
+    <!-- Shows assignments grouped by weekday -->
 
     <div class="timetable">
       <table>
@@ -101,7 +101,7 @@
       </table>
     </div>
 
-    <!-- Assignment cards with status and due-date details -->
+    <!-- Assignment cards with status and due-date info -->
 
     <div class="assignments">
       <div id="assignmentCards"></div>
@@ -136,7 +136,7 @@
           return `${yyyy}-${mm}-${dd}`;
         }
 
-        // Render today's workload card.
+        // Render the today's workload card.
 
         function renderTodayWorkload(assignments) {
           const today = new Date();
@@ -147,7 +147,7 @@
           const todaysAssignments = assignments.filter(a => {
             if (a.status === 'Completed') return false;
 
-            // Convert due date to a comparable local date.
+            // Convert due date into comparable local date.
             
             const dueDate = parseDueDate(a.due);
             if (!dueDate) return false;
@@ -174,7 +174,7 @@
       const data = localStorage.getItem('assignments');
       let arr = data ? JSON.parse(data) : [];
 
-      // Auto-update status from due dates.
+      // Auto-update each status from due dates.
       
       const today = new Date();
       today.setHours(0,0,0,0);
@@ -228,7 +228,7 @@
       return 'med';
     }
 
-    // Convert due date into weekday index.
+    // Convert due date to weekday index.
 
     function getWeekdayIndex(dateStr) {
 
@@ -251,11 +251,11 @@
         document.getElementById('fridayCell')
       ];
       
-      // Clear old timetable content before drawing new items.
+      // Clear old timetable content first.
       
       cells.forEach(cell => cell.innerHTML = '');
 
-      // Put each assignment into the correct weekday cell.
+      // Put each assignment in the right weekday cell.
 
       assignments.forEach(a => {
         const idx = getWeekdayIndex(a.due);

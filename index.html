@@ -8,15 +8,15 @@
 </head>
 
 <body>
-<!-- Loading spinner shown during page transition -->
+<!-- Loader shown while moving into the app -->
 <div id="loaderOverlay">
   <div class="spinner"></div>
 </div>
 
-<!-- Visual reveal layer -->
+<!-- Extra reveal layer for smoother transition -->
 <div id="revealOverlay"></div>
 
-<!-- Decorative floating icons -->
+<!-- Floating study icons in the background -->
 <div class="floating-items">
   <div class="floating-item left" style="top:10%; animation: floatDown 12s linear infinite;">📚</div>
   <div class="floating-item left" style="top:40%; animation: floatUp 14s linear infinite;">✏️</div>
@@ -27,7 +27,7 @@
   <div class="floating-item right" style="top:75%; animation: floatUp 15s linear infinite;">📌</div>
 </div>
 
-<!-- First-time name setup -->
+<!-- First-time setup: ask for username -->
 <div class="container hidden" id="setupScreen">
   <h3>Hey there!</h3>
   <h4> What should we call you?</h4>
@@ -37,7 +37,7 @@
   </div>
 </div>
 
-<!-- Main welcome screen -->
+<!-- Main welcome panel -->
 <div class="container hidden" id="welcomeScreen">
   <div class="app-title">Welcome to Essential Assignment Tracker</div>
   <div class="time" id="time"></div>
@@ -49,11 +49,11 @@
   </div>
 </div>
 
-<!-- Entry sound -->
+<!-- Sound effect for entering dashboard -->
 <audio id="enterSound" src="FX/ui-tap.wav" preload="auto"></audio>
 
 <script>
-// Save name and show personalized welcome.
+// Save username and show the welcome card.
 const savedName = localStorage.getItem("username");
 if(savedName) showWelcome(savedName);
 else document.getElementById("setupScreen").classList.remove("hidden");
@@ -89,7 +89,7 @@ function showWelcome(name){
   updateTime();
 }
 
-// Enter button transition logic.
+// Enter button flow and transition.
 document.getElementById("enterBtn").addEventListener("click", ()=>{
     const sound = document.getElementById("enterSound");
     const loader = document.getElementById("loaderOverlay");
@@ -103,7 +103,7 @@ document.getElementById("enterBtn").addEventListener("click", ()=>{
     },1020);
   };
 
-  // Prevent double-click from triggering multiple redirects.
+  // Block double-click so we do not navigate twice.
   enterBtn.disabled = true;
 
     let playPromise = null;
@@ -114,10 +114,10 @@ document.getElementById("enterBtn").addEventListener("click", ()=>{
 
     if (navigator.vibrate) navigator.vibrate(30);
 
-    // Tell dashboard to show transition loader.
+    // Tell dashboard page to show its loader too.
     localStorage.setItem("loadingTransition", "true");
 
-    // Show loader immediately.
+    // Turn on loader right away.
     loader.classList.add("active");
 
     let hasNavigated = false;
@@ -127,21 +127,21 @@ document.getElementById("enterBtn").addEventListener("click", ()=>{
       goToDashboard();
     };
 
-    // Navigate after sound ends.
+    // Go to dashboard after sound finishes.
     if (soundEnabled) {
       sound.onended = safeNavigate;
     } else {
       setTimeout(safeNavigate, 120);
     }
 
-    // Continue even if sound fails.
+    // Keep going even if sound cannot play.
     if (playPromise && typeof playPromise.catch === "function") {
       playPromise.catch(()=> {
         safeNavigate();
       });
     }
 
-    // Fallback: continue after timeout.
+    // Safety fallback so navigation always happens.
     setTimeout(()=>{
       safeNavigate();
     },12000);
