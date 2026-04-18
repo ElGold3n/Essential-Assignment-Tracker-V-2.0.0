@@ -1,21 +1,21 @@
-/* about.css - Styles for the About page */
+/* about page styles */
 
-/* ========== DARK MODE STYLES ========== */
+/* ---------- dark mode ---------- */
 
-/* Content area background and text in dark mode */
+/* dark card area colors */
 
 .dark-mode .content {
   background: #161b22 !important;
   color: #e0e0e0 !important;
 }
 
-/* Gear menu (backup/restore) in dark mode */
+/* dark style for backup menu */
 .dark-mode .gear-menu {
   background: #23263a !important;
   color: #e0e0e0 !important;
 }
 
-/* Make export/backup text white in dark mode */
+/* keep backup text readable in dark mode */
 
 .dark-mode #backupMenu .hint,
 .dark-mode #backupMenu button,
@@ -23,18 +23,18 @@
   color: #fff !important;
 }
 
-/* Info section background in dark mode */
+/* about section in dark mode */
 .dark-mode .section {
   background: #161b22 !important;
   color: #e0e0e0 !important;
 }
 
-/* Highlighted text in dark mode */
+/* highlight color in dark mode */
 .dark-mode .section .highlight {
   color: #b411cf !important;
 }
 
-/* Body and header backgrounds in dark mode */
+/* page + header dark background */
 .dark-mode body {
   background: #0d1117 !important;
   color: #e0e0e0 !important;
@@ -44,13 +44,13 @@
   color: #fff;
 }
 
-/* Card backgrounds in dark mode */
+/* dark card fallback */
 .dark-mode .card {
   background: #161b22 !important;
   color: #e0e0e0 !important;
 }
 
-/* Navigation links in dark mode */
+/* nav link colors in dark mode */
 .dark-mode .nav a {
   color: #fff;
 }
@@ -58,9 +58,9 @@
   color: #58a6ff;
 }
 
-/* ========== LIGHT MODE & GENERAL STYLES ========== */
+/* ---------- light mode + general ---------- */
 
-/* Main body font and background */
+/* base page look */
 body {
   font-family: Arial, sans-serif;
   background: #fdfdfd;
@@ -69,7 +69,7 @@ body {
   line-height: 1.6;
 }
 
-/* Header bar at the top of the page */
+/* top header bar */
 .header {
   background: #270f2b;
   color: white;
@@ -80,7 +80,7 @@ body {
   box-shadow: 0 3px 7px rgba(0,0,0,0.15);
 }
 
-/* Back button (top left) */
+/* back button */
 .back-btn {
   color: #f3f8f2;
   font-size: 1.3rem;
@@ -90,17 +90,17 @@ body {
   align-items: center;
   gap: 6px;
 }
-/* Back button hover effect */
+/* back button hover */
 .back-btn:hover { color: #a5d8ff; }
 
-/* Navigation links (top right) */
+/* top nav links */
 .nav a {
   color: white;
   margin-left: 20px;
   text-decoration: none;
   font-weight: bold;
 }
-/* Navigation link hover effect */
+/* nav hover color */
 .nav a:hover { color: #a5d8ff; }
 
 .nav a.active {
@@ -109,7 +109,7 @@ body {
   text-underline-offset: 4px;
 }
 
-/* Main content area */
+/* main about container */
 .content {
   max-width: 800px;
   margin: 40px auto;
@@ -120,25 +120,25 @@ body {
   text-align: center;
 }
 
-/* Main heading */
+/* heading style */
 h1 {
   color: #f2e7f4;
   margin: 0 0 25px;
   font-size: 1.5rem;
 }
 
-/* Graduation cap icon */
+/* big title icon */
 .icon {
   font-size: 6rem;
   margin-bottom: 20px;
 }
 
-/* Grouping for back button and gear */
+/* left controls group */
 .left-group { display: flex; align-items: center; gap: 8px; }
 
-/* Settings gear button */
+/* settings wrapper */
 .settings { position: relative; display: inline-block; z-index: 60; }
-/* Gear (settings) button style */
+/* gear button style */
 .gear-btn {
   background: transparent;
   border: none;
@@ -150,7 +150,7 @@ h1 {
   border-radius: 6px;
 }
 
-/* Backup/restore dropdown menu */
+/* backup dropdown */
 .gear-menu {
   position: absolute;
   left: 0;
@@ -168,19 +168,19 @@ h1 {
   width: 180px;
   overflow: hidden;
 }
-/* Show gear menu when open */
+/* open state for dropdown */
 .gear-menu[aria-hidden="false"] {
   transform: scale(1);
   opacity: 1;
   pointer-events: auto;
 }
-/* Show gear menu on focus */
+/* keyboard focus also opens dropdown */
 .settings:focus-within .gear-menu {
   transform: scale(1);
   opacity: 1;
   pointer-events: auto;
 }
-/* Buttons inside gear menu */
+/* dropdown buttons */
 .gear-menu button {
   display: block;
   width: 100%;
@@ -191,23 +191,23 @@ h1 {
   cursor: pointer;
   font-size: 0.95rem;
 }
-/* Gear menu button hover */
+/* dropdown hover */
 .gear-menu button:hover { background: #f4f6f8; }
-/* Hint text in gear menu */
+/* small hint text in menu */
 .gear-menu .hint {
   font-size: 0.8rem;
   color: #666;
   padding: 8px 12px;
 }
 
-/* Info section (about text) */
+/* about text block */
 .section { max-width: 600px; margin: 0 auto 35px; text-align: left; }
-/* List and highlight styles */
+/* list spacing + highlighted labels */
 ul { padding-left: 20px; margin: 15px 0; }
 ul li { margin: 10px 0; }
 .highlight { font-weight: bold; color: #2c3e50; }
 
-/* Footer note at the bottom */
+/* tiny footer message */
 .footer-note {
   margin-top: 50px;
   color: #6c757d;
@@ -215,7 +215,7 @@ ul li { margin: 10px 0; }
   font-size: 1.1rem;
 }
 
-/* Back to Home button at the bottom */
+/* bottom back-home button */
 .back-bottom {
   display: inline-block;
   margin-top: 40px;
